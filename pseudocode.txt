@@ -1,0 +1,124 @@
+PseudocodeCompiler(FileNames -> FilesNames)
+
+LineTokenizer(Strings -> Tokens) " " ( , (special characters)
+produces a LineToken
+	Tabs
+	List<Tokens>
+
+Interpreter(Tokens -> Constructs)
+
+LanguageWriter(Constructs -> Code & Files)
+
+---Classes---
+abstract class LanguageConstruct
+	- originalCode : String
+	
+enum AccessModifier
+	public,
+	private,
+	protected,
+	default,
+	
+class ClassConstruct
+	AccessModifier modifier
+	String className
+	String inheritance
+	List<String> implementation
+	List<InstanceVariable> instanceVariables
+	List<Method> methods
+
+class EnumConstruct
+	List<String> values
+	
+class InterfaceConstruct
+	List<MethodSignatures>
+
+class InstanceVariable
+	AccessModifier modifier
+	VariableDeclaration variable
+
+class VariableDeclaration
+	String Type
+	String VariableName
+
+class Method
+	MethodSignature methodSignature
+	List<Line> lines
+	
+class MethodSignature
+	AccessModifier modifier
+	String returnType
+	String methodName
+	List<VariableDeclaration> parameters
+	
+
+abstract class Line
+	String value
+
+class Comment extends Line
+class Code extends Line
+
+
+
+---Grammar---
+
+File := Class | Interface | Enum
+  
+Innerclass := Class
+  
+Class := AccessModifier ClassName [Inheritence] [Implementation]
+		{
+			InstanceVariables
+			Methods
+		}
+ClassName := .*
+
+Inheritence := extends Type
+
+Implementation := implements TypeList
+TypeList := Type | TypeList
+
+InstanceVariables :=  | InstanceVariable | InstanceVariables
+InstanceVariable := AccessModifier VariableDeclaration
+
+Methods :=  | Method | Methods  
+Method := MethodSignature { Lines }
+  
+MethodSignature := AccessModifier ReturnType MethodName ParameterList
+
+(depends on language)
+AccessModifier := public | private | protected | default(nothing)
+
+ReturnType := Type
+
+(force language practices?, e.g. lowercase first letter - Java)
+MethodName := .*
+
+ParameterList =: ( VariableDeclaration ParameterVariableDeclaration )
+
+ParameterVariableDeclaration :=  | , ParameterVariableDeclaration
+
+VariableDeclaration := Type VariableName
+
+Type := .*
+
+VariableName =: .*
+
+Lines := Comments | CodeLine | Lines
+
+CodeLine :=
+	if (Conditional) {}			|
+	else (Conditional) {}       |
+	for x to y,                 |
+	foreach .* in .*            |
+	while (Conditional) {}      |
+	until (Conditional) {}      |
+	while(true) {                
+		if (Conditional) 
+		{
+			break;
+		}
+	}                           |
+	.*
+	
+Conditional := .*
