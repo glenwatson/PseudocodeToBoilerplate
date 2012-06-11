@@ -48,7 +48,8 @@ public class Interpreter
 		modifier = parseModifier(tokens.get(indention));
 		methodName = parseMethodName(tokens.get(indention+1));
 		parameters = parseParameters(indention+2, tokens);
-		returnType = parseType(tokens.get(indention+parameters.size()));
+		int returnTypePosition = 3+(parameters.size()*3)+(Math.abs(parameters.size()-1));
+		returnType = parseType(tokens.get(indention+returnTypePosition));
 		
 		
 		
