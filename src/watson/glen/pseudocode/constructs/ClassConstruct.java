@@ -53,6 +53,14 @@ public class ClassConstruct extends LanguageConstruct
 		this.methods = methods;
 	}
 
+	public ClassConstruct(String className)
+	{
+		super();
+		this.className = className;
+		this.modifier = AccessModifier.publicModifier;
+		this.implementations = new ArrayList<String>();
+		this.methods = new ArrayList<>();
+	}
 	public AccessModifier getModifier()
 	{
 		return modifier;

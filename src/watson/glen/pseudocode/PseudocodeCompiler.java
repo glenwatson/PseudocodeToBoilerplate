@@ -2,6 +2,7 @@ package watson.glen.pseudocode;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -28,9 +29,14 @@ public class PseudocodeCompiler
 		FileInputStream inStream = new FileInputStream(fileName);
 		Scanner scan = new Scanner(inStream);
 		
-		LineToken lineToken = LineTokenizer.Tokenize(scan.nextLine());
+		List<LineToken> lineTokens = new LinkedList<LineToken>();
+		while(scan.hasNext())
+		{
+			LineToken lineToken = LineTokenizer.Tokenize(scan.nextLine());
+			lineTokens.add(lineToken);
+		}
 		
-		List<LanguageConstruct> constructs = Interpreter.interpret(lineToken);
+		List<LanguageConstruct> constructs = Interpreter.interpret(lineTokens);
 		
 		FileSystemWriter.output(constructs);
 	}
