@@ -1,7 +1,7 @@
-	let a be equal() to 5
-			derp
-glen watson
-grant watson
-dale watson
-"commit"
-me()
++ glen(grant : String) : void
++ glen(grant : String, dale : String) : void
++ glen(grant : String, meh : int) : void
+- jeff() : String
+# mom(glen : float, dale : String, grant : double, dad : byte) : int
+- _jeff() : _String
+	+ her_e() : vo_id
