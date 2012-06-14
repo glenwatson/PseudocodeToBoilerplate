@@ -14,6 +14,17 @@ import watson.glen.pseudocode.tokenizer.Token;
 
 public class Interpreter
 {
+	private static final String accessModifier = "[\\+\\-#]";
+	private static final String generic ="<[a-zA-Z_][a-zA-Z0-9_]*>";
+	private static final String type ="([a-zA-Z_][a-zA-Z0-9_]*("+generic+")?)";
+	private static final String name = "([a-z_][a-zA-Z0-9_]*)";
+	
+	private static final String parameter = "("+name+" : "+type+")";
+	private static final String parameters = "("+parameter+", )*"+parameter;
+	private static final String parameterList = "\\(("+parameters+"|"+parameter+"?)\\)";
+	
+	private static final String methodSigRegex = accessModifier + " " + name + parameterList + " : " + type; 
+	
 	public static List<LanguageConstruct> interpret(List<LineToken> lineTokens)
 	{
 		
