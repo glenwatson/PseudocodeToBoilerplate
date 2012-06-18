@@ -1,7 +1,10 @@
 package watson.glen.pseudocode.interpreter;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,74 +33,121 @@ public class Interpreter
 	
 	public static List<LanguageConstruct> interpret(List<LineToken> lineTokens)
 	{
+		List<LanguageConstruct> constructs = new LinkedList<LanguageConstruct>();
 		
 		for (LineToken lineToken : lineTokens)
 		{
-			//	+ methodName(parameterName : parameterType) : returnType
-			MethodSignature sig = parseMethodSignature(lineToken.getTokens());
-			
+			try
+			{
+				//	+ methodName(parameterName : parameterType) : returnType
+				MethodSignature sig = parseMethodSignature(lineToken.getTokens());
+				constructs.add(sig);
+			} catch (NotAMethodSignatureException e)
+			{
+				e.printStackTrace();
+				//I don't know what to do here
+			}
 		}
-		
-		List<LanguageConstruct> constructs = new LinkedList<LanguageConstruct>();
 		
 		return constructs;
 		
 	}
 	
-	private static MethodSignature parseMethodSignature(List<Token> tokens)
+	private static MethodSignature parseMethodSignature(List<Token> tokenList) throws NotAMethodSignatureException
 	{
+		Queue<Token> tokens = toQueue(tokenList);
 		AccessModifier modifier = null;
 		String returnType = null;
 		String methodName = null;
 		List<VariableDeclaration> parameters = null;
 		
-		int indention = 0;
-		for (Token token : tokens)
-		{
-			if(token.getValue().equals("\\t"))
-			{
-				indention++;
-				continue;
-			}
-		}
-		
-		modifier = parseModifier(tokens.get(indention));
-		methodName = parseMethodName(tokens.get(indention+1));
-		parameters = parseParameters(indention+2, tokens);
-		int returnTypePosition = 3+(parameters.size()*3)+(Math.abs(parameters.size()-1));
-		returnType = parseType(tokens.get(indention+returnTypePosition));
-//		
+		int indention = getIndendation(tokens);
+		modifier = parseModifier(tokens);
+		boolean isStatic = parseStatic(tokens);
+		methodName = parseMethodName(tokens);
+		parameters = parseParameters(tokens);
+		returnType = parseType(tokens);
 		
 		
 		MethodSignature sig = null;
 		if(modifier != null && returnType != null && methodName != null && parameters != null)
-			sig = new MethodSignature(modifier, returnType, methodName, parameters);
+			sig = new MethodSignature(modifier, isStatic, returnType, methodName, parameters);
 		return sig;
 	}
 
-	private static String parseType(Token token)
+	private static boolean parseStatic(Queue<Token> tokens)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		if(tokens.peek().getValue() == "_")
+		{
+			tokens.poll();
+			return true;
+		}
+		return false;
 	}
 
-	private static List<VariableDeclaration> parseParameters(int i, List<Token> tokens)
+	private static Queue<Token> toQueue(List<Token> tokenList)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		LinkedList<Token> llQueue = new LinkedList<>();
+		Collections.copy(llQueue, tokenList);
+		return llQueue;
 	}
 
-	private static String parseMethodName(Token token)
+	private static int getIndendation(Queue<Token> tokens)
 	{
-		String value = token.getValue();
+		int indention = 0;
+		while(tokens.size() > 0 && tokens.poll().getValue().equals(TAB))
+			indention++;
+		return indention;
+	}
+
+	private static String parseType(Queue<Token> tokens)
+	{
+		String type = tokens.poll().getValue();
+		return type;
+	}
+
+	private static List<VariableDeclaration> parseParameters(Queue<Token> tokens) throws NotAMethodSignatureException
+	{
+		if(tokens.poll().getValue() != "(")
+			return null;
+		
+		List<VariableDeclaration> varDeclarations = new ArrayList<>();
+		if(tokens.peek().getValue() != ")")
+		{
+			varDeclarations.add(parseParameter(tokens));
+			while(tokens.peek().getValue() != ")")
+			{
+				if(tokens.poll().getValue() != ",")
+					throw new NotAMethodSignatureException("No \",\" in between parameters");
+				varDeclarations.add(parseParameter(tokens));
+			}
+		}
+		
+		if(tokens.poll().getValue() != ")")
+			throw new NotAMethodSignatureException("No closing \")\" in parameter list");
+		return varDeclarations;
+	}
+	
+	private static VariableDeclaration parseParameter(Queue<Token> tokens) throws NotAMethodSignatureException
+	{
+		String variableName = tokens.poll().getValue();
+		if(tokens.poll().getValue() != ":")
+			throw new NotAMethodSignatureException("No \":\" in parameter list variable declaration");
+		String type = tokens.poll().getValue();
+		return new VariableDeclaration(type, variableName);
+	}
+
+	private static String parseMethodName(Queue<Token> tokens)
+	{
+		String value = tokens.poll().getValue();
 		
 		return value;
 	}
 
-	private static AccessModifier parseModifier(Token token)
+	private static AccessModifier parseModifier(Queue<Token> tokens)
 	{
 		AccessModifier modifier;
-		switch(token.getValue())
+		switch(tokens.poll().getValue())
 		{
 			case "+":
 				modifier = AccessModifier.publicModifier;
@@ -108,8 +158,11 @@ public class Interpreter
 			case "#":
 				modifier = AccessModifier.protectedModifier;
 				break;
+			case "~":
+				modifier = AccessModifier.defaultModifier;
+				break;
 			default:
-				modifier = null;
+				modifier = AccessModifier.publicModifier;
 				break;
 		}
 		return modifier;

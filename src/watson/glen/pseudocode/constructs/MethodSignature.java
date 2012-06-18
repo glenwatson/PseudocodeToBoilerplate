@@ -6,28 +6,28 @@ import java.util.List;
 public class MethodSignature extends LanguageConstruct
 {
 	private AccessModifier modifier;
+	private boolean isStatic;
 	private String returnType;
 	private String methodName;
 	private List<VariableDeclaration> parameters;
-	
-	public MethodSignature(AccessModifier modifier, String returnType, String methodName, List<VariableDeclaration> parameters)
+	public MethodSignature(AccessModifier modifier, boolean isStatic, String returnType, String methodName, List<VariableDeclaration> parameters)
 	{
 		super();
 		this.modifier = modifier;
+		this.isStatic = isStatic;
 		this.returnType = returnType;
 		this.methodName = methodName;
 		this.parameters = parameters;
 	}
-	
-	public MethodSignature(AccessModifier modifier, String returnType, String methodName)
+	public MethodSignature(AccessModifier modifier, boolean isStatic, String returnType, String methodName)
 	{
 		super();
 		this.modifier = modifier;
+		this.isStatic = isStatic;
 		this.returnType = returnType;
 		this.methodName = methodName;
 		this.parameters = new ArrayList<VariableDeclaration>();
 	}
-
 	public AccessModifier getModifier()
 	{
 		return modifier;
@@ -35,6 +35,14 @@ public class MethodSignature extends LanguageConstruct
 	public void setModifier(AccessModifier modifier)
 	{
 		this.modifier = modifier;
+	}
+	public boolean isStatic()
+	{
+		return isStatic;
+	}
+	public void setStatic(boolean isStatic)
+	{
+		this.isStatic = isStatic;
 	}
 	public String getReturnType()
 	{
@@ -60,6 +68,5 @@ public class MethodSignature extends LanguageConstruct
 	{
 		this.parameters = parameters;
 	}
-	
 	
 }
