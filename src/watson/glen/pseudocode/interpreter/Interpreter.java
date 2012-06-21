@@ -16,6 +16,7 @@ import watson.glen.pseudocode.tokenizer.Token;
 public class Interpreter
 {
 	//method signature regex
+	private static final String tabs = "(\t)*";
 	private static final String accessModifier = "[\\+\\-#]";
 	private static final String generic ="<[a-zA-Z_][a-zA-Z0-9_]*>";
 	private static final String type ="([a-zA-Z_][a-zA-Z0-9_]*("+generic+")?)";
@@ -25,7 +26,7 @@ public class Interpreter
 	private static final String parameters = "("+parameter+", )*"+parameter;
 	private static final String parameterList = "\\(("+parameters+"|"+parameter+"?)\\)";
 	
-	private static final String methodSigRegex = accessModifier + " " + name + parameterList + " : " + type;
+	private static final String methodSigRegex = tabs + accessModifier + " " + name + parameterList + " : " + type;
 	//end method signature regex
 	private static final String TAB = "\t";
 	
@@ -63,7 +64,7 @@ public class Interpreter
 		modifier = parseModifier(tokens);
 		boolean isStatic = parseStatic(tokens);
 		methodName = parseMethodName(tokens);
-		parameters = parseParameters(tokens);
+		parameters = parseParameterList(tokens);
 		returnType = parseType(tokens);
 		
 		
@@ -71,21 +72,21 @@ public class Interpreter
 		return sig;
 	}
 
-	private static boolean parseStatic(Queue<Token> tokens)
-	{
-		if(tokens.peek().getValue().equals("_"))
-		{
-			tokens.poll();
-			return true;
-		}
-		return false;
-	}
-
 	private static Queue<Token> toQueue(List<Token> tokenList)
 	{
 		LinkedList<Token> llQueue = new LinkedList<>(tokenList);
 //		Collections.copy(llQueue, tokenList);
 		return llQueue;
+	}
+	
+	private static boolean parseStatic(Queue<Token> tokens)
+	{
+		if(tokens.size() > 0 && tokens.peek().getValue().equals("_"))
+		{
+			tokens.poll();
+			return true;
+		}
+		return false;
 	}
 
 	private static int getIndendation(Queue<Token> tokens)
@@ -99,36 +100,46 @@ public class Interpreter
 		return indention;
 	}
 
-	private static String parseType(Queue<Token> tokens)
+	private static String parseType(Queue<Token> tokens) throws NotAMethodSignatureException
 	{
-		String type = tokens.poll().getValue();
-		return type;
+		if(tokens.size() == 0)
+			throw new NotAMethodSignatureException("No type given");
+		return tokens.poll().getValue();
+	}
+
+	private static List<VariableDeclaration> parseParameterList(Queue<Token> tokens) throws NotAMethodSignatureException
+	{
+		if(tokens.size() == 0 || !tokens.poll().getValue().equals("("))
+			throw new NotAMethodSignatureException("No \"(\" after method name");
+		
+		if(tokens.size() == 0)
+			throw new NotAMethodSignatureException("No parameter list or closing paren \")\" after opening paren \"(\"");
+		boolean endOfParameterList = !tokens.peek().getValue().equals(")");
+		List<VariableDeclaration> varDeclarations = endOfParameterList ? parseParameters(tokens) : new ArrayList<VariableDeclaration>();
+		
+		if(tokens.size() == 0 || !tokens.poll().getValue().equals(")"))
+			throw new NotAMethodSignatureException("No closing \")\" in parameter list");
+		return varDeclarations;
 	}
 
 	private static List<VariableDeclaration> parseParameters(Queue<Token> tokens) throws NotAMethodSignatureException
 	{
-		if(!tokens.poll().getValue().equals("("))
-			throw new NotAMethodSignatureException("No \"(\" after method name");
-		
-		List<VariableDeclaration> varDeclarations = new ArrayList<>();
-		if(!tokens.peek().getValue().equals(")"))
+		List<VariableDeclaration> varDeclarations = new LinkedList<>();
+		varDeclarations.add(parseParameter(tokens));
+		while(!tokens.peek().getValue().equals(")"))
 		{
+			if(!tokens.poll().getValue().equals(","))
+				throw new NotAMethodSignatureException("No \",\" in between parameters");
 			varDeclarations.add(parseParameter(tokens));
-			while(!tokens.peek().getValue().equals(")"))
-			{
-				if(!tokens.poll().getValue().equals(","))
-					throw new NotAMethodSignatureException("No \",\" in between parameters");
-				varDeclarations.add(parseParameter(tokens));
-			}
 		}
-		
-		if(!tokens.poll().getValue().equals(")"))
-			throw new NotAMethodSignatureException("No closing \")\" in parameter list");
 		return varDeclarations;
 	}
 	
 	private static VariableDeclaration parseParameter(Queue<Token> tokens) throws NotAMethodSignatureException
 	{
+		if(tokens.size() < 3)
+			throw new NotAMethodSignatureException("Invalid parameter list variable declaration");
+		
 		String variableName = tokens.poll().getValue();
 		if(!tokens.poll().getValue().equals(":"))
 			throw new NotAMethodSignatureException("No \":\" in parameter list variable declaration");
@@ -136,15 +147,18 @@ public class Interpreter
 		return new VariableDeclaration(type, variableName);
 	}
 
-	private static String parseMethodName(Queue<Token> tokens)
+	private static String parseMethodName(Queue<Token> tokens) throws NotAMethodSignatureException
 	{
-		String value = tokens.poll().getValue();
-		
-		return value;
+		if(tokens.size() < 1)
+			throw new NotAMethodSignatureException("No method name");
+		return tokens.poll().getValue();
 	}
 
-	private static AccessModifier parseModifier(Queue<Token> tokens)
+	private static AccessModifier parseModifier(Queue<Token> tokens) throws NotAMethodSignatureException
 	{
+		if(tokens.size() < 1)
+			throw new NotAMethodSignatureException("No access modifier");
+		
 		AccessModifier modifier;
 		switch(tokens.poll().getValue())
 		{

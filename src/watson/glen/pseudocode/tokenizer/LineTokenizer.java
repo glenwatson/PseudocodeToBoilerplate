@@ -20,7 +20,6 @@ public class LineTokenizer
 		
 		while(matcher.find())
 		{
-System.out.println(matcher.group());
 			Token token = new Token(matcher.group());
 			tokens.add(token);
 		}
