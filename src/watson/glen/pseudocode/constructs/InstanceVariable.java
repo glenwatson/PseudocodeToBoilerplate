@@ -1,7 +1,7 @@
 package watson.glen.pseudocode.constructs;
 
 
-public class InstanceVariable extends LanguageConstruct
+public class InstanceVariable
 {
 	private AccessModifier modifier;
 	private VariableDeclaration variable;

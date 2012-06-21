@@ -1,6 +1,6 @@
 package watson.glen.pseudocode.constructs;
 
-public class VariableDeclaration extends LanguageConstruct
+public class VariableDeclaration
 {
 	private String type;
 	private String variableName;

@@ -1,6 +1,6 @@
 package watson.glen.pseudocode.constructs;
 
-public abstract class MethodLine extends LanguageConstruct
+public abstract class MethodLine
 {
 	private String value;
 	

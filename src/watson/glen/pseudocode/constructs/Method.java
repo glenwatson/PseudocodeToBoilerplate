@@ -3,7 +3,7 @@ package watson.glen.pseudocode.constructs;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Method extends LanguageConstruct
+public class Method
 {
 	private MethodSignature methodSignature;
 	private List<MethodLine> lines;

@@ -3,7 +3,7 @@ package watson.glen.pseudocode.constructs;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MethodSignature extends LanguageConstruct
+public class MethodSignature
 {
 	private AccessModifier modifier;
 	private boolean isStatic;
