@@ -23,6 +23,20 @@ public class LineToken
 		this.tokens = tokens;
 	}
 	
-	
+	@Override
+	public String toString()
+	{
+		StringBuilder sb = new StringBuilder();
+		
+		for(Token token : tokens)
+		{
+			sb.append(token.getValue());
+			sb.append(' ');
+		}
+		sb.deleteCharAt(sb.length()-1);
+		
+		return sb.toString();
+		
+	}
 	
 }

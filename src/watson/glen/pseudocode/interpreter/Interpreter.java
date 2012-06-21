@@ -27,7 +27,7 @@ public class Interpreter
 	
 	private static final String methodSigRegex = accessModifier + " " + name + parameterList + " : " + type;
 	//end method signature regex
-	private static final String TAB = "\\t";
+	private static final String TAB = "\t";
 	
 	public static List<LanguageConstruct> interpret(List<LineToken> lineTokens)
 	{
@@ -39,7 +39,7 @@ public class Interpreter
 			{
 				//	+ methodName(parameterName : parameterType) : returnType
 				MethodSignature sig = parseMethodSignature(lineToken.getTokens());
-				constructs.add(sig);
+//				constructs.add(sig);
 			} catch (NotAMethodSignatureException e)
 			{
 				e.printStackTrace();
@@ -67,15 +67,13 @@ public class Interpreter
 		returnType = parseType(tokens);
 		
 		
-		MethodSignature sig = null;
-		if(modifier != null && returnType != null && methodName != null && parameters != null)
-			sig = new MethodSignature(modifier, isStatic, returnType, methodName, parameters);
+		MethodSignature sig = new MethodSignature(modifier, isStatic, returnType, methodName, parameters);
 		return sig;
 	}
 
 	private static boolean parseStatic(Queue<Token> tokens)
 	{
-		if(tokens.peek().getValue() == "_")
+		if(tokens.peek().getValue().equals("_"))
 		{
 			tokens.poll();
 			return true;
@@ -85,16 +83,19 @@ public class Interpreter
 
 	private static Queue<Token> toQueue(List<Token> tokenList)
 	{
-		LinkedList<Token> llQueue = new LinkedList<>();
-		Collections.copy(llQueue, tokenList);
+		LinkedList<Token> llQueue = new LinkedList<>(tokenList);
+//		Collections.copy(llQueue, tokenList);
 		return llQueue;
 	}
 
 	private static int getIndendation(Queue<Token> tokens)
 	{
 		int indention = 0;
-		while(tokens.size() > 0 && tokens.poll().getValue().equals(TAB))
+		while(tokens.size() > 0 && tokens.peek().getValue().equals(TAB))
+		{
+			tokens.poll();
 			indention++;
+		}
 		return indention;
 	}
 
@@ -106,22 +107,22 @@ public class Interpreter
 
 	private static List<VariableDeclaration> parseParameters(Queue<Token> tokens) throws NotAMethodSignatureException
 	{
-		if(tokens.poll().getValue() != "(")
-			return null;
+		if(!tokens.poll().getValue().equals("("))
+			throw new NotAMethodSignatureException("No \"(\" after method name");
 		
 		List<VariableDeclaration> varDeclarations = new ArrayList<>();
-		if(tokens.peek().getValue() != ")")
+		if(!tokens.peek().getValue().equals(")"))
 		{
 			varDeclarations.add(parseParameter(tokens));
-			while(tokens.peek().getValue() != ")")
+			while(!tokens.peek().getValue().equals(")"))
 			{
-				if(tokens.poll().getValue() != ",")
+				if(!tokens.poll().getValue().equals(","))
 					throw new NotAMethodSignatureException("No \",\" in between parameters");
 				varDeclarations.add(parseParameter(tokens));
 			}
 		}
 		
-		if(tokens.poll().getValue() != ")")
+		if(!tokens.poll().getValue().equals(")"))
 			throw new NotAMethodSignatureException("No closing \")\" in parameter list");
 		return varDeclarations;
 	}
@@ -129,7 +130,7 @@ public class Interpreter
 	private static VariableDeclaration parseParameter(Queue<Token> tokens) throws NotAMethodSignatureException
 	{
 		String variableName = tokens.poll().getValue();
-		if(tokens.poll().getValue() != ":")
+		if(!tokens.poll().getValue().equals(":"))
 			throw new NotAMethodSignatureException("No \":\" in parameter list variable declaration");
 		String type = tokens.poll().getValue();
 		return new VariableDeclaration(type, variableName);
