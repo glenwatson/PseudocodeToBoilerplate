@@ -10,6 +10,7 @@ public class MethodSignature extends LanguageConstruct
 	private String returnType;
 	private String methodName;
 	private List<VariableDeclaration> parameters;
+	
 	public MethodSignature(AccessModifier modifier, boolean isStatic, String returnType, String methodName, List<VariableDeclaration> parameters)
 	{
 		super();

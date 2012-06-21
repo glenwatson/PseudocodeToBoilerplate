@@ -1,16 +1,16 @@
 package watson.glen.pseudocode.constructs;
 
-public abstract class Line extends LanguageConstruct
+public abstract class MethodLine extends LanguageConstruct
 {
 	private String value;
 	
-	public Line()
+	public MethodLine()
 	{
 		super();
 		value = "";
 	}
 	
-	public Line(String value)
+	public MethodLine(String value)
 	{
 		super();
 		this.value = value;

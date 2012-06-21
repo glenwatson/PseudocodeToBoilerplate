@@ -6,9 +6,9 @@ import java.util.List;
 public class Method extends LanguageConstruct
 {
 	private MethodSignature methodSignature;
-	private List<Line> lines;
+	private List<MethodLine> lines;
 	
-	public Method(MethodSignature methodSignature, List<Line> lines)
+	public Method(MethodSignature methodSignature, List<MethodLine> lines)
 	{
 		super();
 		this.methodSignature = methodSignature;
@@ -19,7 +19,7 @@ public class Method extends LanguageConstruct
 	{
 		super();
 		this.methodSignature = methodSignature;
-		this.lines = new ArrayList<Line>();
+		this.lines = new ArrayList<MethodLine>();
 	}
 	
 	public MethodSignature getMethodSignature()
@@ -32,12 +32,12 @@ public class Method extends LanguageConstruct
 		this.methodSignature = methodSignature;
 	}
 	
-	public List<Line> getLines()
+	public List<MethodLine> getLines()
 	{
 		return lines;
 	}
 	
-	public void setLines(List<Line> lines)
+	public void setLines(List<MethodLine> lines)
 	{
 		this.lines = lines;
 	}
