@@ -1,12 +1,12 @@
 package watson.glen.pseudocode.interpreter;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
 import watson.glen.pseudocode.constructs.AccessModifier;
+import watson.glen.pseudocode.constructs.ClassConstruct;
 import watson.glen.pseudocode.constructs.LanguageConstruct;
 import watson.glen.pseudocode.constructs.MethodSignature;
 import watson.glen.pseudocode.constructs.VariableDeclaration;
@@ -33,19 +33,18 @@ public class Interpreter
 	public static List<LanguageConstruct> interpret(List<LineToken> lineTokens)
 	{
 		List<LanguageConstruct> constructs = new LinkedList<LanguageConstruct>();
+		ClassConstruct classConstruct = new ClassConstruct("ClassName");
 		
 		for (LineToken lineToken : lineTokens)
 		{
-			try
-			{
-				//	+ methodName(parameterName : parameterType) : returnType
-				MethodSignature sig = parseMethodSignature(lineToken.getTokens());
-//				constructs.add(sig);
-			} catch (NotAMethodSignatureException e)
-			{
-				e.printStackTrace();
-				//I don't know what to do here
-			}
+//			try
+//			{
+//				MethodSignature sig = parseMethodSignature(lineToken.getTokens());
+//			} catch (NotAMethodSignatureException e)
+//			{
+//				e.printStackTrace();
+//				//I don't know what to do here
+//			}
 		}
 		
 		return constructs;
