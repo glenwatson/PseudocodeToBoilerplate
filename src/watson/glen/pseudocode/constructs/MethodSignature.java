@@ -1,6 +1,6 @@
 package watson.glen.pseudocode.constructs;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class MethodSignature
@@ -10,7 +10,6 @@ public class MethodSignature
 	private String returnType;
 	private String methodName;
 	private List<VariableDeclaration> parameters;
-	
 	public MethodSignature(AccessModifier modifier, boolean isStatic, String returnType, String methodName, List<VariableDeclaration> parameters)
 	{
 		super();
@@ -27,7 +26,7 @@ public class MethodSignature
 		this.isStatic = isStatic;
 		this.returnType = returnType;
 		this.methodName = methodName;
-		this.parameters = new ArrayList<VariableDeclaration>();
+		this.parameters = new LinkedList<>();
 	}
 	public AccessModifier getModifier()
 	{
