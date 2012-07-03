@@ -12,6 +12,13 @@ public class ClassConstruct extends LanguageConstruct
 	private List<InstanceVariable> instanceVariables;
 	private List<Method> methods;
 	
+	public ClassConstruct()
+	{
+		this.modifier = AccessModifier.publicModifier;
+		this.implementations = new ArrayList<String>();
+		this.methods = new ArrayList<>();
+	}
+	
 	public ClassConstruct(AccessModifier modifier, String className, String inheritance, List<String> implementations,
 			List<InstanceVariable> instanceVariables, List<Method> methods)
 	{

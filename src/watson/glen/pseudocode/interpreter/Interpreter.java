@@ -7,6 +7,7 @@ import java.util.Queue;
 
 import watson.glen.pseudocode.constructs.AccessModifier;
 import watson.glen.pseudocode.constructs.ClassConstruct;
+import watson.glen.pseudocode.constructs.Comment;
 import watson.glen.pseudocode.constructs.LanguageConstruct;
 import watson.glen.pseudocode.constructs.MethodSignature;
 import watson.glen.pseudocode.constructs.VariableDeclaration;
@@ -15,8 +16,10 @@ import watson.glen.pseudocode.tokenizer.Token;
 
 public class Interpreter
 {
-	//method signature regex
-	private static final String tabs = "(\t)*";
+	private static final String TAB = "\t";
+	private static Level0State lvl0State;
+	/*//method signature regex
+	private static final String tabs = "("+TAB+")*";
 	private static final String accessModifier = "[\\+\\-#]";
 	private static final String generic ="<[a-zA-Z_][a-zA-Z0-9_]*>";
 	private static final String type ="([a-zA-Z_][a-zA-Z0-9_]*("+generic+")?)";
@@ -28,27 +31,99 @@ public class Interpreter
 	
 	private static final String methodSigRegex = tabs + accessModifier + " " + name + parameterList + " : " + type;
 	//end method signature regex
-	private static final String TAB = "\t";
+*/
 	
 	public static List<LanguageConstruct> interpret(List<LineToken> lineTokens)
 	{
 		List<LanguageConstruct> constructs = new LinkedList<LanguageConstruct>();
-		ClassConstruct classConstruct = new ClassConstruct("ClassName");
 		
 		for (LineToken lineToken : lineTokens)
 		{
-//			try
-//			{
-//				MethodSignature sig = parseMethodSignature(lineToken.getTokens());
-//			} catch (NotAMethodSignatureException e)
-//			{
-//				e.printStackTrace();
-//				//I don't know what to do here
-//			}
+			Queue<Token> tokens = toQueue(lineToken.getTokens());
+			parseTokenLine(tokens);
 		}
 		
 		return constructs;
 		
+	}
+
+	private static void parseTokenLine(Queue<Token> tokens)
+	{
+		int indentionLevel = getIndendation(tokens);
+		switch(indentionLevel)
+		{
+			case 0: //Class, Interface, Enum
+				parseLevel0(tokens);
+				break;
+			case 1:
+				parseLevel1(tokens);
+				break;
+			default:
+				parseLevelGreaterThan2(tokens);
+				break;
+		}
+	}
+
+	private static void parseLevel0(Queue<Token> tokens)
+	{
+		//if there are values here,
+		//	Init new class/interface/enum
+		//	parse the values
+		//	update lvl0State
+	}
+
+	private static void parseLevel1(Queue<Token> tokens)
+	{
+		switch(lvl0State)
+		{
+			case Class: //Instance variables, Method signatures,
+				lvl0State = Level0State.Class;
+				break;
+			case Interface: //Method signatures
+					
+				break;
+			case Enum: //Enum values
+				
+				break;
+		}
+	}
+
+	private static void parseLevelGreaterThan2(Queue<Token> tokens)
+	{
+		switch(lvl0State)
+		{
+			case Class: //Method lines
+				
+				break;
+			case Interface: //Umm, no?
+				
+				break;
+			case Enum: //Nope
+				
+				break;
+		}
+	}
+	
+	private static int getIndendation(Queue<Token> tokens)
+	{
+		int indention = 0;
+		while(tokens.size() > 0 && tokens.peek().getValue().equals(TAB))
+		{
+			tokens.poll();
+			indention++;
+		}
+		return indention;
+	}
+	
+	private static Comment parseComment(Queue<Token> tokens)
+	{
+		StringBuilder sb = new StringBuilder();
+		Token token;
+		while((token = tokens.poll()) != null)
+		{
+			sb.append(token.getValue());
+		}
+		return new Comment(sb.toString());
 	}
 	
 	private static MethodSignature parseMethodSignature(List<Token> tokenList) throws NotAMethodSignatureException
@@ -86,17 +161,6 @@ public class Interpreter
 			return true;
 		}
 		return false;
-	}
-
-	private static int getIndendation(Queue<Token> tokens)
-	{
-		int indention = 0;
-		while(tokens.size() > 0 && tokens.peek().getValue().equals(TAB))
-		{
-			tokens.poll();
-			indention++;
-		}
-		return indention;
 	}
 
 	private static String parseType(Queue<Token> tokens) throws NotAMethodSignatureException
