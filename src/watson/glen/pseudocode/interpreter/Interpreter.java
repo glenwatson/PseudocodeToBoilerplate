@@ -66,6 +66,22 @@ public class Interpreter
 
 	private static void parseLevel0(Queue<Token> tokens)
 	{
+		String first = tokens.poll().getValue();
+		switch(first)
+		{
+			case "class":
+				lvl0State = Level0State.Class("");
+				break;
+			case "interface":
+				lvl0State = Level0State.Interface;
+				break;
+			case "enum":
+				lvl0State = Level0State.Enum;
+				break;
+			default:
+				lvl0State = null;
+		}
+		
 		//if there are values here,
 		//	Init new class/interface/enum
 		//	parse the values

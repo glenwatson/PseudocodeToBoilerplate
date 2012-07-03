@@ -7,15 +7,15 @@ public class EnumConstruct extends LanguageConstruct
 {
 	private List<String> values;
 
-	public EnumConstruct()
+	public EnumConstruct(String enumName)
 	{
-		super();
+		super(enumName);
 		values = new ArrayList<String>();
 	}
 
-	public EnumConstruct(List<String> values)
+	public EnumConstruct(String enumName, List<String> values)
 	{
-		super();
+		super(enumName);
 		this.values = values;
 	}
 

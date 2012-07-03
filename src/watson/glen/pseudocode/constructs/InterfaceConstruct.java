@@ -7,15 +7,15 @@ public class InterfaceConstruct extends LanguageConstruct
 {
 	private List<MethodSignature> methodSignatures;
 
-	public InterfaceConstruct()
+	public InterfaceConstruct(String interfaceName)
 	{
-		super();
+		super(interfaceName);
 		this.methodSignatures = new ArrayList<MethodSignature>();
 	}
 
-	public InterfaceConstruct(List<MethodSignature> methodSignatures)
+	public InterfaceConstruct(String interfaceName, List<MethodSignature> methodSignatures)
 	{
-		super();
+		super(interfaceName);
 		this.methodSignatures = methodSignatures;
 	}
 

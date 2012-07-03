@@ -6,25 +6,16 @@ import java.util.List;
 public class ClassConstruct extends LanguageConstruct
 {
 	private AccessModifier modifier;
-	private String className;
 	private String inheritance;
 	private List<String> implementations;
 	private List<InstanceVariable> instanceVariables;
 	private List<Method> methods;
 	
-	public ClassConstruct()
-	{
-		this.modifier = AccessModifier.publicModifier;
-		this.implementations = new ArrayList<String>();
-		this.methods = new ArrayList<>();
-	}
-	
 	public ClassConstruct(AccessModifier modifier, String className, String inheritance, List<String> implementations,
 			List<InstanceVariable> instanceVariables, List<Method> methods)
 	{
-		super();
+		super(className);
 		this.modifier = modifier;
-		this.className = className;
 		this.inheritance = inheritance;
 		this.implementations = implementations;
 		this.instanceVariables = instanceVariables;
@@ -33,18 +24,16 @@ public class ClassConstruct extends LanguageConstruct
 	public ClassConstruct(AccessModifier modifier, String className, List<String> implementations, List<InstanceVariable> instanceVariables,
 			List<Method> methods)
 	{
-		super();
+		super(className);
 		this.modifier = modifier;
-		this.className = className;
 		this.implementations = implementations;
 		this.instanceVariables = instanceVariables;
 		this.methods = methods;
 	}
 	public ClassConstruct(AccessModifier modifier, String className, String inheritance, List<InstanceVariable> instanceVariables, List<Method> methods)
 	{
-		super();
+		super(className);
 		this.modifier = modifier;
-		this.className = className;
 		this.inheritance = inheritance;
 		this.implementations = new ArrayList<String>();
 		this.instanceVariables = instanceVariables;
@@ -52,9 +41,8 @@ public class ClassConstruct extends LanguageConstruct
 	}
 	public ClassConstruct(AccessModifier modifier, String className, String inheritance, List<Method> methods)
 	{
-		super();
+		super(className);
 		this.modifier = modifier;
-		this.className = className;
 		this.implementations = new ArrayList<String>();
 		this.inheritance = inheritance;
 		this.methods = methods;
@@ -62,8 +50,7 @@ public class ClassConstruct extends LanguageConstruct
 
 	public ClassConstruct(String className)
 	{
-		super();
-		this.className = className;
+		super(className);
 		this.modifier = AccessModifier.publicModifier;
 		this.implementations = new ArrayList<String>();
 		this.methods = new ArrayList<>();
@@ -76,16 +63,6 @@ public class ClassConstruct extends LanguageConstruct
 	public void setModifier(AccessModifier modifier)
 	{
 		this.modifier = modifier;
-	}
-
-	public String getClassName()
-	{
-		return className;
-	}
-
-	public void setClassName(String className)
-	{
-		this.className = className;
 	}
 
 	public String getInheritance()
