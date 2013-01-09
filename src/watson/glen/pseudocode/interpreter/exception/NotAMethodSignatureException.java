@@ -1,4 +1,4 @@
-package watson.glen.pseudocode.interpreter;
+package watson.glen.pseudocode.interpreter.exception;
 
 public class NotAMethodSignatureException extends Exception
 {

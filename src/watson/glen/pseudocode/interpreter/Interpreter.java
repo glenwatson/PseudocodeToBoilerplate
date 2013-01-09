@@ -14,6 +14,7 @@ import watson.glen.pseudocode.constructs.InterfaceConstruct;
 import watson.glen.pseudocode.constructs.LanguageConstruct;
 import watson.glen.pseudocode.constructs.MethodSignature;
 import watson.glen.pseudocode.constructs.VariableDeclaration;
+import watson.glen.pseudocode.interpreter.exception.NotAMethodSignatureException;
 import watson.glen.pseudocode.tokenizer.LineToken;
 import watson.glen.pseudocode.tokenizer.Token;
 
@@ -134,6 +135,8 @@ public class Interpreter
 			case Enum: //Enum values
 				parseEnumValues(tokens);
 				break;
+			default:
+				assert false : lvl0State;
 		}
 	}
 
@@ -169,8 +172,10 @@ public class Interpreter
 				//throw new 
 				break;
 			case Enum: //Nope
-				
+				//throw new 
 				break;
+			default:
+				assert false : lvl0State;
 		}
 	}
 	
