@@ -35,8 +35,9 @@ public class PseudocodeCompiler
 			LineToken lineToken = LineTokenizer.Tokenize(scan.nextLine());
 			lineTokens.add(lineToken);
 		}
+		scan.close();
 		
-		List<LanguageConstruct> constructs = Interpreter.interpret(lineTokens);
+		List<LanguageConstruct> constructs = new Interpreter().interpret(lineTokens);
 		
 		FileSystemWriter.output(constructs);
 //		new Scanner(System.in).nextLine();

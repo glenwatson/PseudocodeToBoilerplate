@@ -3,7 +3,7 @@ package watson.glen.pseudocode.constructs;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClassConstruct extends LanguageConstruct
+public class ClassConstruct extends FirstClassMember
 {
 	private AccessModifier modifier;
 	private String inheritance;

@@ -3,7 +3,7 @@ package watson.glen.pseudocode.constructs;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InterfaceConstruct extends LanguageConstruct
+public class InterfaceConstruct extends FirstClassMember
 {
 	private List<MethodSignature> methodSignatures;
 

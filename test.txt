@@ -1,3 +1,5 @@
+class glen
+	+ derp() : void
 // gal
 //adfads
 // herpa adf asd fkadf 

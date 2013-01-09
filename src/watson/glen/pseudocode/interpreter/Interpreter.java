@@ -8,6 +8,9 @@ import java.util.Queue;
 import watson.glen.pseudocode.constructs.AccessModifier;
 import watson.glen.pseudocode.constructs.ClassConstruct;
 import watson.glen.pseudocode.constructs.Comment;
+import watson.glen.pseudocode.constructs.EnumConstruct;
+import watson.glen.pseudocode.constructs.FirstClassMember;
+import watson.glen.pseudocode.constructs.InterfaceConstruct;
 import watson.glen.pseudocode.constructs.LanguageConstruct;
 import watson.glen.pseudocode.constructs.MethodSignature;
 import watson.glen.pseudocode.constructs.VariableDeclaration;
@@ -16,9 +19,14 @@ import watson.glen.pseudocode.tokenizer.Token;
 
 public class Interpreter
 {
-	private static final String TAB = "\t";
-	private static Level0State lvl0State;
-	/*//method signature regex
+	private final String TAB = "\t";
+	List<LanguageConstruct> constructs = new LinkedList<LanguageConstruct>();
+	private Level0State lvl0State;
+	private ClassConstruct lastClass;
+	private InterfaceConstruct lastInterface;
+	private EnumConstruct lastEnum;
+	/*
+	//method signature regex
 	private static final String tabs = "("+TAB+")*";
 	private static final String accessModifier = "[\\+\\-#]";
 	private static final String generic ="<[a-zA-Z_][a-zA-Z0-9_]*>";
@@ -33,50 +41,75 @@ public class Interpreter
 	//end method signature regex
 */
 	
-	public static List<LanguageConstruct> interpret(List<LineToken> lineTokens)
+	public List<LanguageConstruct> interpret(List<LineToken> lineTokens)
 	{
-		List<LanguageConstruct> constructs = new LinkedList<LanguageConstruct>();
-		
-		for (LineToken lineToken : lineTokens)
-		{
-			Queue<Token> tokens = toQueue(lineToken.getTokens());
-			parseTokenLine(tokens);
-		}
-		
+		parseLineTokens(lineTokens);
 		return constructs;
+	}
+	
+	private void parseLineTokens(List<LineToken> lineTokens)
+	{
+		for(LineToken lineToken : lineTokens)
+		{
+			parseTokens(lineToken.getTokens());
+		}
 		
 	}
 
-	private static void parseTokenLine(Queue<Token> tokens)
+	private void parseTokens(List<Token> tokens)
 	{
-		int indentionLevel = getIndendation(tokens);
+		Queue<Token> tokenQueue = toTokenQueue(tokens);
+		int indentionLevel = getIndendation(tokenQueue);
 		switch(indentionLevel)
 		{
 			case 0: //Class, Interface, Enum
-				parseLevel0(tokens);
+				parseLevel0(tokenQueue);
 				break;
 			case 1:
-				parseLevel1(tokens);
+				parseLevel1(tokenQueue);
 				break;
 			default:
-				parseLevelGreaterThan2(tokens);
+				parseLevelGreaterThan2(tokenQueue);
 				break;
 		}
 	}
-
-	private static void parseLevel0(Queue<Token> tokens)
+	
+	private FirstClassMember getFirstClassMember()
+	{
+		switch(lvl0State)
+		{
+			case Class:
+				return lastClass;
+			case Interface:
+				return lastInterface;
+			case Enum:
+				return lastEnum;
+		}
+		return null;
+	}
+	
+	private void parseLevel0(Queue<Token> tokens)
 	{
 		String first = tokens.poll().getValue();
+		String name = tokens.poll().getValue();
 		switch(first)
 		{
 			case "class":
-				lvl0State = Level0State.Class("");
+				lvl0State = Level0State.Class;
+				lastClass = new ClassConstruct(name);
+				constructs.add(lastClass);
+				//parse extends/implements
 				break;
 			case "interface":
 				lvl0State = Level0State.Interface;
+				lastInterface = new InterfaceConstruct(name);
+				constructs.add(lastInterface);
+				//parse extends or implements?
 				break;
 			case "enum":
 				lvl0State = Level0State.Enum;
+				lastEnum = new EnumConstruct(name);
+				constructs.add(lastEnum);
 				break;
 			default:
 				lvl0State = null;
@@ -88,23 +121,44 @@ public class Interpreter
 		//	update lvl0State
 	}
 
-	private static void parseLevel1(Queue<Token> tokens)
+	private void parseLevel1(Queue<Token> tokens)
 	{
 		switch(lvl0State)
 		{
 			case Class: //Instance variables, Method signatures,
-				lvl0State = Level0State.Class;
+				parseClassInternals(tokens);
 				break;
 			case Interface: //Method signatures
-					
+				parseInterfaceMethodSignature(tokens);
 				break;
 			case Enum: //Enum values
-				
+				parseEnumValues(tokens);
 				break;
 		}
 	}
 
-	private static void parseLevelGreaterThan2(Queue<Token> tokens)
+	private void parseClassInternals(Queue<Token> tokens)
+	{
+		
+	}
+
+	private void parseInterfaceMethodSignature(Queue<Token> tokens) throws NotAMethodSignatureException
+	{
+		parseMethodSignature(tokens);
+	}
+
+	private void parseEnumValues(Queue<Token> tokens)
+	{
+		while(tokens.size() > 0)
+		{
+			String value = tokens.poll().getValue();
+			lastEnum.getValues().add(value);
+			if(tokens.size()>0 && tokens.peek().equals(","))
+				tokens.poll();
+		}
+	}
+
+	private void parseLevelGreaterThan2(Queue<Token> tokens)
 	{
 		switch(lvl0State)
 		{
@@ -112,7 +166,7 @@ public class Interpreter
 				
 				break;
 			case Interface: //Umm, no?
-				
+				//throw new 
 				break;
 			case Enum: //Nope
 				
@@ -120,7 +174,7 @@ public class Interpreter
 		}
 	}
 	
-	private static int getIndendation(Queue<Token> tokens)
+	private int getIndendation(Queue<Token> tokens)
 	{
 		int indention = 0;
 		while(tokens.size() > 0 && tokens.peek().getValue().equals(TAB))
@@ -131,7 +185,7 @@ public class Interpreter
 		return indention;
 	}
 	
-	private static Comment parseComment(Queue<Token> tokens)
+	private Comment parseComment(Queue<Token> tokens)
 	{
 		StringBuilder sb = new StringBuilder();
 		Token token;
@@ -142,34 +196,32 @@ public class Interpreter
 		return new Comment(sb.toString());
 	}
 	
-	private static MethodSignature parseMethodSignature(List<Token> tokenList) throws NotAMethodSignatureException
+	private MethodSignature parseMethodSignature(Queue<Token> tokens) throws NotAMethodSignatureException
 	{
-		Queue<Token> tokens = toQueue(tokenList);
-		AccessModifier modifier = null;
-		String returnType = null;
-		String methodName = null;
-		List<VariableDeclaration> parameters = null;
-		
-		int indention = getIndendation(tokens);
-		modifier = parseModifier(tokens);
+		AccessModifier modifier = parseModifier(tokens);
 		boolean isStatic = parseStatic(tokens);
-		methodName = parseMethodName(tokens);
-		parameters = parseParameterList(tokens);
-		returnType = parseType(tokens);
+		String methodName = parseMethodName(tokens);
+		List<VariableDeclaration> parameters = parseParameterList(tokens);
+		String returnType = parseType(tokens);
 		
 		
 		MethodSignature sig = new MethodSignature(modifier, isStatic, returnType, methodName, parameters);
 		return sig;
 	}
 
-	private static Queue<Token> toQueue(List<Token> tokenList)
+	private Queue<Token> toTokenQueue(List<Token> tokenList)
 	{
 		LinkedList<Token> llQueue = new LinkedList<>(tokenList);
-//		Collections.copy(llQueue, tokenList);
 		return llQueue;
 	}
 	
-	private static boolean parseStatic(Queue<Token> tokens)
+	private Queue<LineToken> toLineTokenQueue(List<LineToken> lineTokenList)
+	{
+		LinkedList<LineToken> llQueue = new LinkedList<>(lineTokenList);
+		return llQueue;
+	}
+	
+	private boolean parseStatic(Queue<Token> tokens)
 	{
 		if(tokens.size() > 0 && tokens.peek().getValue().equals("_"))
 		{
@@ -179,14 +231,14 @@ public class Interpreter
 		return false;
 	}
 
-	private static String parseType(Queue<Token> tokens) throws NotAMethodSignatureException
+	private String parseType(Queue<Token> tokens) throws NotAMethodSignatureException
 	{
 		if(tokens.size() == 0)
 			throw new NotAMethodSignatureException("No type given");
 		return tokens.poll().getValue();
 	}
 
-	private static List<VariableDeclaration> parseParameterList(Queue<Token> tokens) throws NotAMethodSignatureException
+	private List<VariableDeclaration> parseParameterList(Queue<Token> tokens) throws NotAMethodSignatureException
 	{
 		if(tokens.size() == 0 || !tokens.poll().getValue().equals("("))
 			throw new NotAMethodSignatureException("No \"(\" after method name");
@@ -201,7 +253,7 @@ public class Interpreter
 		return varDeclarations;
 	}
 
-	private static List<VariableDeclaration> parseParameters(Queue<Token> tokens) throws NotAMethodSignatureException
+	private List<VariableDeclaration> parseParameters(Queue<Token> tokens) throws NotAMethodSignatureException
 	{
 		List<VariableDeclaration> varDeclarations = new LinkedList<>();
 		varDeclarations.add(parseParameter(tokens));
@@ -214,7 +266,7 @@ public class Interpreter
 		return varDeclarations;
 	}
 	
-	private static VariableDeclaration parseParameter(Queue<Token> tokens) throws NotAMethodSignatureException
+	private VariableDeclaration parseParameter(Queue<Token> tokens) throws NotAMethodSignatureException
 	{
 		if(tokens.size() < 3)
 			throw new NotAMethodSignatureException("Invalid parameter list variable declaration");
@@ -226,14 +278,14 @@ public class Interpreter
 		return new VariableDeclaration(type, variableName);
 	}
 
-	private static String parseMethodName(Queue<Token> tokens) throws NotAMethodSignatureException
+	private String parseMethodName(Queue<Token> tokens) throws NotAMethodSignatureException
 	{
 		if(tokens.size() < 1)
 			throw new NotAMethodSignatureException("No method name");
 		return tokens.poll().getValue();
 	}
 
-	private static AccessModifier parseModifier(Queue<Token> tokens) throws NotAMethodSignatureException
+	private AccessModifier parseModifier(Queue<Token> tokens) throws NotAMethodSignatureException
 	{
 		if(tokens.size() < 1)
 			throw new NotAMethodSignatureException("No access modifier");
