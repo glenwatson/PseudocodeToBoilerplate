@@ -130,7 +130,13 @@ public class Interpreter
 				parseClassInternals(tokens);
 				break;
 			case Interface: //Method signatures
-				parseInterfaceMethodSignature(tokens);
+				try
+				{
+					parseInterfaceMethodSignature(tokens);
+				} catch (NotAMethodSignatureException e)
+				{
+					System.out.println(e.getMessage());
+				}
 				break;
 			case Enum: //Enum values
 				parseEnumValues(tokens);
