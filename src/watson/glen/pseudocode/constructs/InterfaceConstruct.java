@@ -7,15 +7,15 @@ public class InterfaceConstruct extends FirstClassMember
 {
 	private List<MethodSignature> methodSignatures;
 
-	public InterfaceConstruct(String interfaceName)
+	public InterfaceConstruct(AccessModifier modifier, String interfaceName)
 	{
-		super(interfaceName);
+		super(modifier, interfaceName);
 		this.methodSignatures = new ArrayList<MethodSignature>();
 	}
 
-	public InterfaceConstruct(String interfaceName, List<MethodSignature> methodSignatures)
+	public InterfaceConstruct(AccessModifier modifier, String interfaceName, List<MethodSignature> methodSignatures)
 	{
-		super(interfaceName);
+		super(modifier, interfaceName);
 		this.methodSignatures = methodSignatures;
 	}
 

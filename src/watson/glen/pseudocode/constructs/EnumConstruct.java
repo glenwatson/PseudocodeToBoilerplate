@@ -5,26 +5,26 @@ import java.util.List;
 
 public class EnumConstruct extends FirstClassMember
 {
-	private List<String> values;
+	private List<String> enumNames;
 
-	public EnumConstruct(String enumName)
+	public EnumConstruct(AccessModifier modifier, String enumName)
 	{
-		super(enumName);
-		values = new ArrayList<String>();
+		super(modifier, enumName);
+		enumNames = new ArrayList<String>();
 	}
 
-	public EnumConstruct(String enumName, List<String> values)
+	public EnumConstruct(AccessModifier modifier, String enumName, List<String> values)
 	{
-		super(enumName);
-		this.values = values;
+		super(modifier, enumName);
+		this.enumNames = values;
 	}
 
-	public List<String> getValues()
+	public List<String> getEnumNames()
 	{
-		return values;
+		return enumNames;
 	}
 
-	public void setValues(List<String> values)
+	public void setEnumNames(List<String> names)
 	{
 		this.enumNames = names;
 	}

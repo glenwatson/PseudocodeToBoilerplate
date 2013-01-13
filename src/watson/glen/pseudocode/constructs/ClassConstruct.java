@@ -5,7 +5,6 @@ import java.util.List;
 
 public class ClassConstruct extends FirstClassMember
 {
-	private AccessModifier modifier;
 	private String inheritance;
 	private List<String> implementations;
 	private List<InstanceVariable> instanceVariables;
@@ -14,8 +13,7 @@ public class ClassConstruct extends FirstClassMember
 	public ClassConstruct(AccessModifier modifier, String className, String inheritance, List<String> implementations,
 			List<InstanceVariable> instanceVariables, List<Method> methods)
 	{
-		super(className);
-		this.modifier = modifier;
+		super(modifier, className);
 		this.inheritance = inheritance;
 		this.implementations = implementations;
 		this.instanceVariables = instanceVariables;
@@ -24,45 +22,19 @@ public class ClassConstruct extends FirstClassMember
 	public ClassConstruct(AccessModifier modifier, String className, List<String> implementations, List<InstanceVariable> instanceVariables,
 			List<Method> methods)
 	{
-		super(className);
-		this.modifier = modifier;
-		this.implementations = implementations;
-		this.instanceVariables = instanceVariables;
-		this.methods = methods;
+		this(modifier, className, null, implementations, instanceVariables, methods);
 	}
 	public ClassConstruct(AccessModifier modifier, String className, String inheritance, List<InstanceVariable> instanceVariables, List<Method> methods)
 	{
-		super(className);
-		this.modifier = modifier;
-		this.inheritance = inheritance;
-		this.implementations = new ArrayList<String>();
-		this.instanceVariables = instanceVariables;
-		this.methods = methods;
+		this(modifier, className, new ArrayList<String>(), instanceVariables, methods);
 	}
 	public ClassConstruct(AccessModifier modifier, String className, String inheritance, List<Method> methods)
 	{
-		super(className);
-		this.modifier = modifier;
-		this.implementations = new ArrayList<String>();
-		this.inheritance = inheritance;
-		this.methods = methods;
+		this(modifier, className, inheritance, new ArrayList<InstanceVariable>(), methods);
 	}
-
-	public ClassConstruct(String className)
+	public ClassConstruct(AccessModifier modifier, String className)
 	{
-		super(className);
-		this.modifier = AccessModifier.publicModifier;
-		this.implementations = new ArrayList<String>();
-		this.methods = new ArrayList<>();
-	}
-	public AccessModifier getModifier()
-	{
-		return modifier;
-	}
-
-	public void setModifier(AccessModifier modifier)
-	{
-		this.modifier = modifier;
+		this(modifier, className, null, new ArrayList<Method>());
 	}
 
 	public String getInheritance()

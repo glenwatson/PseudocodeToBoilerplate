@@ -5,7 +5,7 @@ package watson.glen.pseudocode.constructs;
  * @author glen.watson
  *
  */
-public class SecondClassMember extends LanguageConstruct
+public abstract class SecondClassMember extends LanguageConstruct
 {
 	public SecondClassMember(String name)
 	{

@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 import watson.glen.pseudocode.constructs.AccessModifier;
 import watson.glen.pseudocode.constructs.ClassConstruct;
 import watson.glen.pseudocode.constructs.Comment;
@@ -14,6 +16,7 @@ import watson.glen.pseudocode.constructs.InterfaceConstruct;
 import watson.glen.pseudocode.constructs.LanguageConstruct;
 import watson.glen.pseudocode.constructs.MethodSignature;
 import watson.glen.pseudocode.constructs.VariableDeclaration;
+import watson.glen.pseudocode.interpreter.exception.MissingAccessModifierException;
 import watson.glen.pseudocode.interpreter.exception.NotAMethodSignatureException;
 import watson.glen.pseudocode.tokenizer.LineToken;
 import watson.glen.pseudocode.tokenizer.Token;
@@ -26,6 +29,8 @@ public class Interpreter
 	private ClassConstruct lastClass;
 	private InterfaceConstruct lastInterface;
 	private EnumConstruct lastEnum;
+	
+	private MethodSignature lastMethod;
 	/*
 	//method signature regex
 	private static final String tabs = "("+TAB+")*";
@@ -75,6 +80,17 @@ public class Interpreter
 		}
 	}
 	
+	private int getIndendation(Queue<Token> tokens)
+	{
+		int indention = 0;
+		while(tokens.size() > 0 && tokens.peek().getValue().equals(TAB))
+		{
+			tokens.poll();
+			indention++;
+		}
+		return indention;
+	}
+	
 	private FirstClassMember getFirstClassMember()
 	{
 		switch(lvl0State)
@@ -89,31 +105,40 @@ public class Interpreter
 		return null;
 	}
 	
+	/* Level 0 */
 	private void parseLevel0(Queue<Token> tokens)
 	{
-		String first = tokens.poll().getValue();
-		String name = tokens.poll().getValue();
-		switch(first)
+		try
 		{
-			case "class":
-				lvl0State = Level0State.Class;
-				lastClass = new ClassConstruct(name);
-				constructs.add(lastClass);
-				//parse extends/implements
-				break;
-			case "interface":
-				lvl0State = Level0State.Interface;
-				lastInterface = new InterfaceConstruct(name);
-				constructs.add(lastInterface);
-				//parse extends or implements?
-				break;
-			case "enum":
-				lvl0State = Level0State.Enum;
-				lastEnum = new EnumConstruct(name);
-				constructs.add(lastEnum);
-				break;
-			default:
-				lvl0State = null;
+			AccessModifier modifier = parseModifier(tokens);
+			String first = tokens.poll().getValue();
+			String name = tokens.poll().getValue();
+			switch(first)
+			{
+				case "class":
+					lvl0State = Level0State.Class;
+					lastClass = new ClassConstruct(modifier, name);
+					constructs.add(lastClass);
+					//TODO: parse extends/implements
+					break;
+				case "interface":
+					lvl0State = Level0State.Interface;
+					lastInterface = new InterfaceConstruct(modifier, name);
+					constructs.add(lastInterface);
+					//TODO: parse extends or implements?
+					break;
+				case "enum":
+					lvl0State = Level0State.Enum;
+					lastEnum = new EnumConstruct(modifier, name);
+					constructs.add(lastEnum);
+					break;
+				default:
+					lvl0State = null;
+			}
+		} catch (MissingAccessModifierException e)
+		{
+			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 		
 		//if there are values here,
@@ -121,13 +146,26 @@ public class Interpreter
 		//	parse the values
 		//	update lvl0State
 	}
-
+	
+	
+	/* Level 1*/
 	private void parseLevel1(Queue<Token> tokens)
 	{
 		switch(lvl0State)
 		{
 			case Class: //Instance variables, Method signatures,
-				parseClassInternals(tokens);
+				try
+				{
+					parseClassInternals(tokens);
+				} catch (NotAMethodSignatureException e)
+				{
+					System.out.println(e.getMessage());
+					e.printStackTrace();
+				} catch (MissingAccessModifierException e)
+				{
+					System.out.println(e.getMessage());
+					e.printStackTrace();
+				}
 				break;
 			case Interface: //Method signatures
 				try
@@ -136,6 +174,10 @@ public class Interpreter
 				} catch (NotAMethodSignatureException e)
 				{
 					System.out.println(e.getMessage());
+				} catch (MissingAccessModifierException e)
+				{
+					System.out.println(e.getMessage());
+					e.printStackTrace();
 				}
 				break;
 			case Enum: //Enum values
@@ -146,12 +188,12 @@ public class Interpreter
 		}
 	}
 
-	private void parseClassInternals(Queue<Token> tokens)
+	private void parseClassInternals(Queue<Token> tokens) throws NotAMethodSignatureException, MissingAccessModifierException
 	{
-		
+		lastMethod = parseMethodSignature(tokens);
 	}
 
-	private void parseInterfaceMethodSignature(Queue<Token> tokens) throws NotAMethodSignatureException
+	private void parseInterfaceMethodSignature(Queue<Token> tokens) throws NotAMethodSignatureException, MissingAccessModifierException
 	{
 		parseMethodSignature(tokens);
 	}
@@ -161,18 +203,19 @@ public class Interpreter
 		while(tokens.size() > 0)
 		{
 			String value = tokens.poll().getValue();
-			lastEnum.getValues().add(value);
+			lastEnum.getEnumNames().add(value);
 			if(tokens.size()>0 && tokens.peek().equals(","))
 				tokens.poll();
 		}
 	}
-
+	
+	/* Level >= 2 */
 	private void parseLevelGreaterThan2(Queue<Token> tokens)
 	{
 		switch(lvl0State)
 		{
-			case Class: //Method lines
-				
+			case Class: //Actual code
+				parseComment(tokens);
 				break;
 			case Interface: //Umm, no?
 				//throw new 
@@ -183,17 +226,6 @@ public class Interpreter
 			default:
 				assert false : lvl0State;
 		}
-	}
-	
-	private int getIndendation(Queue<Token> tokens)
-	{
-		int indention = 0;
-		while(tokens.size() > 0 && tokens.peek().getValue().equals(TAB))
-		{
-			tokens.poll();
-			indention++;
-		}
-		return indention;
 	}
 	
 	private Comment parseComment(Queue<Token> tokens)
@@ -207,7 +239,7 @@ public class Interpreter
 		return new Comment(sb.toString());
 	}
 	
-	private MethodSignature parseMethodSignature(Queue<Token> tokens) throws NotAMethodSignatureException
+	private MethodSignature parseMethodSignature(Queue<Token> tokens) throws NotAMethodSignatureException, MissingAccessModifierException
 	{
 		AccessModifier modifier = parseModifier(tokens);
 		boolean isStatic = parseStatic(tokens);
@@ -296,10 +328,10 @@ public class Interpreter
 		return tokens.poll().getValue();
 	}
 
-	private AccessModifier parseModifier(Queue<Token> tokens) throws NotAMethodSignatureException
+	private AccessModifier parseModifier(Queue<Token> tokens) throws MissingAccessModifierException
 	{
 		if(tokens.size() < 1)
-			throw new NotAMethodSignatureException("No access modifier");
+			throw new MissingAccessModifierException();
 		
 		AccessModifier modifier;
 		switch(tokens.poll().getValue())
