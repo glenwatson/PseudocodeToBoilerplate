@@ -8,6 +8,9 @@ public class FileSystemWriter
 {
 	public static void output(List<LanguageConstruct> constructs)
 	{
-		
+		for(LanguageConstruct construct : constructs)
+		{
+			System.out.println(construct);			
+		}
 	}
 }

@@ -32,7 +32,9 @@ public class PseudocodeCompiler
 		List<LineToken> lineTokens = new LinkedList<LineToken>();
 		while(scan.hasNext())
 		{
-			LineToken lineToken = LineTokenizer.Tokenize(scan.nextLine());
+			String line = scan.nextLine();
+			System.out.println("read line: "+line);
+			LineToken lineToken = LineTokenizer.Tokenize(line);
 			lineTokens.add(lineToken);
 		}
 		scan.close();

@@ -52,9 +52,9 @@ public class Interpreter
 	{
 		for(LineToken lineToken : lineTokens)
 		{
+			System.out.println("parsing: "+lineToken);
 			parseTokens(lineToken.getTokens());
 		}
-		
 	}
 
 	private void parseTokens(List<Token> tokens)

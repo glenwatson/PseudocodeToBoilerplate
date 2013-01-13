@@ -1,14 +1,14 @@
-class glen
++ class glen
 	+ derp() : void
-// gal
-//adfads
-// herpa adf asd fkadf 
-//
-+ glen(grant : String) : void
-+ glen(grant : String, dale : String) : void
-+ glen(grant : String, meh : int) : void
-- jeff() : String
-# mom(glen : float, dale : String, grant : double, dad : byte) : int
-- _jeff() : _String
+		gal
+		adfads
+		herpa adf asd fkadf 
+		
+	+ glen(grant : String) : void
+	+ glen(grant : String, dale : String) : void
+	+ glen(grant : String, meh : int) : void
+	- jeff() : String
+	# mom(glen : float, dale : String, grant : double, dad : byte) : int
+	- _jeff() : _String
 	+ her_e() : vo_id
 		

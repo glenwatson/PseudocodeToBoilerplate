@@ -105,4 +105,41 @@ public class ClassConstruct extends FirstClassMember
 		this.methods = methods;
 	}
 	
+	@Override
+	public String toString()
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append(modifier);
+		sb.append(" class ");
+		sb.append(name);
+		if(inheritance != null)
+		{
+			sb.append(" extends ");
+			sb.append(inheritance);
+		}
+		sb.append(" ");
+		for(String implementation : implementations)
+		{
+			sb.append(implementation);
+			sb.append(", ");
+		}
+		sb.deleteCharAt(sb.length()-1);
+		sb.append("\r\n");
+		
+		for(InstanceVariable instanceVariable : instanceVariables)
+		{
+			sb.append(instanceVariable);
+			sb.append("\r\n");
+		}
+		sb.append("\r\n");
+		
+		for(Method method : methods)
+		{
+			sb.append(method);
+			sb.append("\r\n");
+		}
+		sb.append("\r\n");
+		
+		return sb.toString();
+	}
 }

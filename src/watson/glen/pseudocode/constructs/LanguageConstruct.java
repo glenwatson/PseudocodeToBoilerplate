@@ -20,4 +20,6 @@ public abstract class LanguageConstruct
 		this.name = name;
 	}
 	
+	@Override
+	public abstract String toString();
 }

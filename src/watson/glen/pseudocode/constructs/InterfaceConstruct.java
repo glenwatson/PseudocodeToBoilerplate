@@ -28,5 +28,17 @@ public class InterfaceConstruct extends FirstClassMember
 	{
 		this.methodSignatures = methodSignatures;
 	}
+
+	@Override
+	public String toString()
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append(modifier);
+		sb.append(" interface ");
+		sb.append(name);
+		sb.append("\r\n");
+		
+		return sb.toString();
+	}
 	
 }
