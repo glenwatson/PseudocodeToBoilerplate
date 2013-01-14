@@ -245,8 +245,9 @@ public class Interpreter
 		boolean isStatic = parseStatic(tokens);
 		String methodName = parseMethodName(tokens);
 		List<VariableDeclaration> parameters = parseParameterList(tokens);
+		if(!tokens.poll().getValue().equals(":"))
+			throw new NotAMethodSignatureException("Missing colon (:) preceding return type on method signature");
 		String returnType = parseType(tokens);
-		
 		
 		MethodSignature sig = new MethodSignature(modifier, isStatic, returnType, methodName, parameters);
 		return sig;
