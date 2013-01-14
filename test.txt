@@ -5,10 +5,15 @@
 		herpa adf asd fkadf 
 		
 	+ glen(grant : String) : void
+		more herp
 	+ glen(grant : String, dale : String) : void
+		more derp
 	+ glen(grant : String, meh : int) : void
 	- jeff() : String
 	# mom(glen : float, dale : String, grant : double, dad : byte) : int
 	- _jeff() : _String
 	+ her_e() : vo_id
+		// comment
+		/*
+		*/
 		

@@ -82,7 +82,7 @@ public class ClassConstruct extends FirstClassMember
 	{
 		StringBuilder sb = new StringBuilder();
 		sb.append(modifier);
-		sb.append(" class ");
+		sb.append("class ");
 		sb.append(name);
 		if(inheritance != null)
 		{
@@ -96,7 +96,7 @@ public class ClassConstruct extends FirstClassMember
 			sb.append(", ");
 		}
 		sb.deleteCharAt(sb.length()-1);
-		sb.append("\r\n");
+		sb.append("\r\n{\r\n");
 		
 		for(InstanceVariable instanceVariable : instanceVariables)
 		{
@@ -110,7 +110,7 @@ public class ClassConstruct extends FirstClassMember
 			sb.append(method);
 			sb.append("\r\n");
 		}
-		sb.append("\r\n");
+		sb.append("}");
 		
 		return sb.toString();
 	}

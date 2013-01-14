@@ -32,5 +32,9 @@ public class VariableDeclaration
 		this.variableName = variableName;
 	}
 	
-	
+	@Override
+	public String toString()
+	{
+		return type + " " + variableName;
+	}
 }

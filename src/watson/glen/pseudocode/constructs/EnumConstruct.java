@@ -40,9 +40,9 @@ public class EnumConstruct extends FirstClassMember
 		for(String enumName : enumNames)
 		{
 			sb.append(enumName);
-			sb.append(",\r\n");
+			sb.append(",\r\n\t");
 		}
-		sb.deleteCharAt(sb.length()-1);
+		sb.deleteCharAt(sb.length()-4);
 		
 		return sb.toString();
 	}

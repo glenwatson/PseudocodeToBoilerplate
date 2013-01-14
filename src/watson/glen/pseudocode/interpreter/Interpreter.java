@@ -14,6 +14,7 @@ import watson.glen.pseudocode.constructs.EnumConstruct;
 import watson.glen.pseudocode.constructs.FirstClassMember;
 import watson.glen.pseudocode.constructs.InterfaceConstruct;
 import watson.glen.pseudocode.constructs.LanguageConstruct;
+import watson.glen.pseudocode.constructs.Method;
 import watson.glen.pseudocode.constructs.MethodSignature;
 import watson.glen.pseudocode.constructs.VariableDeclaration;
 import watson.glen.pseudocode.interpreter.exception.MissingAccessModifierException;
