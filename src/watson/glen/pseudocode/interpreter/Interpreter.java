@@ -5,8 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import watson.glen.pseudocode.constructs.AccessModifier;
 import watson.glen.pseudocode.constructs.ClassConstruct;
 import watson.glen.pseudocode.constructs.Comment;
@@ -31,7 +29,7 @@ public class Interpreter
 	private InterfaceConstruct lastInterface;
 	private EnumConstruct lastEnum;
 	
-	private MethodSignature lastMethod;
+	private Method lastMethod;
 	/*
 	//method signature regex
 	private static final String tabs = "("+TAB+")*";
@@ -191,7 +189,8 @@ public class Interpreter
 
 	private void parseClassInternals(Queue<Token> tokens) throws NotAMethodSignatureException, MissingAccessModifierException
 	{
-		lastMethod = parseMethodSignature(tokens);
+		lastMethod = new Method(parseMethodSignature(tokens));
+		lastClass.getMethods().add(lastMethod);
 	}
 
 	private void parseInterfaceMethodSignature(Queue<Token> tokens) throws NotAMethodSignatureException, MissingAccessModifierException
@@ -216,7 +215,7 @@ public class Interpreter
 		switch(lvl0State)
 		{
 			case Class: //Actual code
-				parseComment(tokens);
+				lastMethod.getLines().add(parseComment(tokens));
 				break;
 			case Interface: //Umm, no?
 				//throw new 
