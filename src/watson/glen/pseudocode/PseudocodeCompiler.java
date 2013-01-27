@@ -5,13 +5,10 @@ import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
 
-import sun.security.util.Length;
-
 import watson.glen.pseudocode.constructs.LanguageConstruct;
 import watson.glen.pseudocode.interpreter.Parser;
 import watson.glen.pseudocode.languagewriter.CodeGeneratable;
 import watson.glen.pseudocode.languagewriter.CodeRepresentation;
-import watson.glen.pseudocode.languagewriter.FileSystemWriter;
 import watson.glen.pseudocode.tokenizer.LineToken;
 import watson.glen.pseudocode.tokenizer.Tokenizer;
 
