@@ -83,7 +83,9 @@ public class MethodSignature
 		sb.append(" ");
 		sb.append(methodName);
 		sb.append("(");
+		int beforeLength = sb.length();
 		sb.append(parameters);
+		sb.delete(beforeLength, beforeLength+1);
 		sb.delete(sb.length()-2, sb.length());
 		sb.append(")");
 		return sb.toString();
