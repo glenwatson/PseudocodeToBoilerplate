@@ -20,7 +20,12 @@ import watson.glen.pseudocode.interpreter.exception.NotAMethodSignatureException
 import watson.glen.pseudocode.tokenizer.LineToken;
 import watson.glen.pseudocode.tokenizer.Token;
 
-public class Interpreter
+/**
+ * Performs syntactic & semantic analysis
+ * @author glen.watson
+ *
+ */
+public class Parser
 {
 	private final String TAB = "\t";
 	List<LanguageConstruct> constructs = new LinkedList<LanguageConstruct>();
