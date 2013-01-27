@@ -11,6 +11,7 @@ import watson.glen.pseudocode.interpreter.Interpreter;
 import watson.glen.pseudocode.languagewriter.FileSystemWriter;
 import watson.glen.pseudocode.tokenizer.LineToken;
 import watson.glen.pseudocode.tokenizer.LineTokenizer;
+import watson.glen.pseudocode.tokenizer.Tokenizer;
 
 /**
  * @author glen.watson
@@ -27,18 +28,8 @@ public class PseudocodeCompiler
 	{
 		String fileName = "test.txt";
 		FileInputStream inStream = new FileInputStream(fileName);
-		Scanner scan = new Scanner(inStream);
 		
-		List<LineToken> lineTokens = new LinkedList<LineToken>();
-		while(scan.hasNext())
-		{
-			String line = scan.nextLine();
-			System.out.println("read line: "+line);
-			LineToken lineToken = LineTokenizer.Tokenize(line);
-			lineTokens.add(lineToken);
-		}
-		scan.close();
-		
+		List<LineToken> lineTokens = Tokenizer.tokenize(inStream);
 		List<LanguageConstruct> constructs = new Interpreter().interpret(lineTokens);
 		
 		FileSystemWriter.output(constructs);

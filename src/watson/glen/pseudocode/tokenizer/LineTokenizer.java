@@ -13,7 +13,7 @@ public class LineTokenizer
 	private static String specialCharacters = "[^\\s]+?";
 	private static Pattern tokenizePattern = Pattern.compile(tab+"|"+comments+"|"+wordOrName+"|"+specialCharacters);
 	
-	public static LineToken Tokenize(String line)
+	public static LineToken tokenize(String line)
 	{
 		Matcher matcher = tokenizePattern.matcher(line);
 		
