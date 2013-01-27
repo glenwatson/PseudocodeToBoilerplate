@@ -86,7 +86,7 @@ public class MethodSignature
 		int beforeLength = sb.length();
 		sb.append(parameters);
 		sb.delete(beforeLength, beforeLength+1);
-		sb.delete(sb.length()-2, sb.length());
+		sb.delete(sb.length()-1, sb.length());
 		sb.append(")");
 		return sb.toString();
 	}
