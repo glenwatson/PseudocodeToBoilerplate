@@ -3,19 +3,19 @@ package watson.glen.pseudocode.constructs;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Method
+public class Method extends SecondClassMember
 {
 	private MethodSignature methodSignature;
 	private List<MethodLine> lines;
 	public Method(MethodSignature methodSignature, List<MethodLine> lines)
 	{
-		super();
+		super(methodSignature.getMethodName());
 		this.methodSignature = methodSignature;
 		this.lines = lines;
 	}
 	public Method(MethodSignature methodSignature)
 	{
-		super();
+		super(methodSignature.getMethodName());
 		this.methodSignature = methodSignature;
 		this.lines = new LinkedList<MethodLine>();
 	}

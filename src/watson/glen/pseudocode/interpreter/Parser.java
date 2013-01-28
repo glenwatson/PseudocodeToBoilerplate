@@ -194,7 +194,9 @@ public class Parser
 
 	private void parseClassInternals(Queue<Token> tokens) throws NotAMethodSignatureException, MissingAccessModifierException
 	{
-		lastMethod = new Method(parseMethodSignature(tokens));
+		// TODO: parse instance variables
+		MethodSignature signature = parseMethodSignature(tokens);
+		lastMethod = new Method(signature);
 		lastClass.getMethods().add(lastMethod);
 	}
 
@@ -248,13 +250,27 @@ public class Parser
 	{
 		AccessModifier modifier = parseModifier(tokens);
 		boolean isStatic = parseStatic(tokens);
-		String methodName = parseMethodName(tokens);
-		List<VariableDeclaration> parameters = parseParameterList(tokens);
-		if(!tokens.poll().getValue().equals(":"))
-			throw new NotAMethodSignatureException("Missing colon (:) preceding return type on method signature");
-		String returnType = parseType(tokens);
+		String name = parseName(tokens);
+		String nextToken = tokens.peek().getValue();
+		if(nextToken.equals(":"))
+		{
+			tokens.poll(); //eat the colon
+			String returnType = parseType(tokens);
+			VariableDeclaration declaration = new VariableDeclaration(returnType, name);
+			if(tokens.size() >= 2 && tokens.poll().getValue().equals("="))
+			{
+				String initalVariableValue = tokens.poll().getValue();
+				declaration.setInitalValue(initalVariableValue);
+			}
+		} else if(nextToken.equals("("))
+		{
+			List<VariableDeclaration> parameters = parseParameterList(tokens);
+			if(!tokens.poll().getValue().equals(":"))
+				throw new NotAMethodSignatureException("Missing colon (:) preceding return type on method signature");
+			String returnType = parseType(tokens);
+			MethodSignature sig = new MethodSignature(modifier, isStatic, returnType, name, parameters);
+		}
 		
-		MethodSignature sig = new MethodSignature(modifier, isStatic, returnType, methodName, parameters);
 		return sig;
 	}
 
@@ -279,7 +295,8 @@ public class Parser
 		}
 		return false;
 	}
-
+	
+	//TODO should return an object
 	private String parseType(Queue<Token> tokens) throws NotAMethodSignatureException
 	{
 		if(tokens.size() == 0)
@@ -327,10 +344,8 @@ public class Parser
 		return new VariableDeclaration(type, variableName);
 	}
 
-	private String parseMethodName(Queue<Token> tokens) throws NotAMethodSignatureException
+	private String parseName(Queue<Token> tokens)
 	{
-		if(tokens.size() < 1)
-			throw new NotAMethodSignatureException("No method name");
 		return tokens.poll().getValue();
 	}
 

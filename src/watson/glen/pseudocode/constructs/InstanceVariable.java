@@ -1,14 +1,14 @@
 package watson.glen.pseudocode.constructs;
 
 
-public class InstanceVariable
+public class InstanceVariable extends SecondClassMember
 {
 	private AccessModifier modifier;
 	private VariableDeclaration variable;
 	
 	public InstanceVariable(AccessModifier modifier, VariableDeclaration variable)
 	{
-		super();
+		super(variable.getVariableName());
 		this.modifier = modifier;
 		this.variable = variable;
 	}
@@ -31,6 +31,12 @@ public class InstanceVariable
 	public void setVariable(VariableDeclaration variable)
 	{
 		this.variable = variable;
+	}
+
+	@Override
+	public String toString()
+	{
+		return modifier.toString() +" "+ variable.toString();
 	}
 	
 	
