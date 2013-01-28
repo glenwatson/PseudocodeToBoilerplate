@@ -1,4 +1,10 @@
 + class glen
+	+ String instanceVar1;
+	- String instanceVar2;
+	# String instanceVar3;
+	~ String instanceVar4;
+	+ String staticVar5;
+	
 	+ derp() : void
 		gal
 		adfads
