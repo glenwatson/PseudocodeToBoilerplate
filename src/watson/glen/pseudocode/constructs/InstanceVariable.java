@@ -8,7 +8,7 @@ public class InstanceVariable extends SecondClassMember
 	
 	public InstanceVariable(AccessModifier modifier, VariableDeclaration variable)
 	{
-		super(variable.getVariableName());
+		super();
 		this.modifier = modifier;
 		this.variable = variable;
 	}
@@ -32,12 +32,17 @@ public class InstanceVariable extends SecondClassMember
 	{
 		this.variable = variable;
 	}
+	
+	@Override
+	public String getName()
+	{
+		return variable.getVariableName();
+	}
 
 	@Override
 	public String toString()
 	{
 		return modifier.toString() +" "+ variable.toString();
 	}
-	
 	
 }

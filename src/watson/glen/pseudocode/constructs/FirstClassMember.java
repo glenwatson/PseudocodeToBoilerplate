@@ -7,9 +7,22 @@ package watson.glen.pseudocode.constructs;
 public abstract class FirstClassMember extends LanguageConstruct
 {
 	protected AccessModifier modifier;
+	protected String name;
+	
 	public FirstClassMember(AccessModifier modifier, String name)
 	{
-		super(name);
+		super();
 		this.modifier = modifier;
+		this.name = name;
+	}
+	
+	public String getName()
+	{
+		return name;
+	}
+	
+	public void setName(String name)
+	{
+		this.name = name;
 	}
 }

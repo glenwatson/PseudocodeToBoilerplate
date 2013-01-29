@@ -2,23 +2,12 @@ package watson.glen.pseudocode.constructs;
 
 public abstract class LanguageConstruct
 {
-	protected String name;
-
-	public LanguageConstruct(String name)
+	public LanguageConstruct()
 	{
 		super();
-		this.name = name;
 	}
 
-	public String getName()
-	{
-		return name;
-	}
-
-	public void setName(String name)
-	{
-		this.name = name;
-	}
+	public abstract String getName();
 	
 	@Override
 	public abstract String toString();

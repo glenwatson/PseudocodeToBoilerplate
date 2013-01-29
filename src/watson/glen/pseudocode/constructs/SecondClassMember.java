@@ -7,8 +7,8 @@ package watson.glen.pseudocode.constructs;
  */
 public abstract class SecondClassMember extends LanguageConstruct
 {
-	public SecondClassMember(String name)
+	public SecondClassMember()
 	{
-		super(name);
+		super();
 	}
 }
