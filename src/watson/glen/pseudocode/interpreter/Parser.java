@@ -7,13 +7,13 @@ import java.util.Queue;
 
 import watson.glen.pseudocode.constructs.AccessModifier;
 import watson.glen.pseudocode.constructs.ClassConstruct;
-import watson.glen.pseudocode.constructs.Comment;
 import watson.glen.pseudocode.constructs.EnumConstruct;
 import watson.glen.pseudocode.constructs.FirstClassMember;
 import watson.glen.pseudocode.constructs.InstanceVariable;
 import watson.glen.pseudocode.constructs.InterfaceConstruct;
 import watson.glen.pseudocode.constructs.LanguageConstruct;
 import watson.glen.pseudocode.constructs.Method;
+import watson.glen.pseudocode.constructs.MethodLine;
 import watson.glen.pseudocode.constructs.MethodSignature;
 import watson.glen.pseudocode.constructs.Type;
 import watson.glen.pseudocode.constructs.VariableDeclaration;
@@ -128,7 +128,6 @@ public class Parser
 					lvl0State = Level0State.Class;
 					currentClass = new ClassConstruct(modifier, name);
 					constructs.add(currentClass);
-					//TODO: parse extends/implements'
 					Type superClass = parseInheritance(tokens);
 					if(superClass != null)
 					{
@@ -291,7 +290,7 @@ public class Parser
 		switch(lvl0State)
 		{
 			case Class: //Actual code
-				currentMethod.getLines().add(parseComment(tokens));
+				currentMethod.getLines().add(parseMethodLine(tokens));
 				break;
 			case Interface: //Umm, no?
 				//throw new 
@@ -304,7 +303,7 @@ public class Parser
 		}
 	}
 	
-	private Comment parseComment(Queue<Token> tokens)
+	private MethodLine parseMethodLine(Queue<Token> tokens)
 	{
 		StringBuilder sb = new StringBuilder();
 		Token token;
@@ -312,7 +311,7 @@ public class Parser
 		{
 			sb.append(token.getValue());
 		}
-		return new Comment(sb.toString());
+		return new MethodLine(sb.toString());
 	}
 	
 	private MethodSignature parseMethodSignature(Queue<Token> tokens) throws NotAMethodSignatureException, MissingAccessModifierException
