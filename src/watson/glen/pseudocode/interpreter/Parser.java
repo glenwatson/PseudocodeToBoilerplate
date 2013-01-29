@@ -127,7 +127,6 @@ public class Parser
 				case "class":
 					lvl0State = Level0State.Class;
 					currentClass = new ClassConstruct(modifier, name);
-					constructs.add(currentClass);
 					Type superClass = parseInheritance(tokens);
 					if(superClass != null)
 					{
@@ -138,12 +137,17 @@ public class Parser
 					{
 						currentClass.setImplementations(implementations);
 					}
+					constructs.add(currentClass);
 					break;
 				case "interface":
 					lvl0State = Level0State.Interface;
 					currentInterface = new InterfaceConstruct(modifier, name);
+					List<Type> inheritanceList = parseInheritanceList(tokens);
+					if(inheritanceList.size() > 0)
+					{
+						currentInterface.setInheritances(inheritanceList);
+					}
 					constructs.add(currentInterface);
-					//TODO: parse extends or implements?
 					break;
 				case "enum":
 					lvl0State = Level0State.Enum;
@@ -178,20 +182,42 @@ public class Parser
 	
 	private List<Type> parseImplementations(Queue<Token> tokens)
 	{
-		List<Type> implementations = new LinkedList<Type>();
+		List<Type> implementations = null;
 		if(tokens.size() >= 2 && tokens.peek().getValue().equals("implements"))
 		{
 			tokens.poll();
-			while(tokens.size() > 0)
+			implementations = parseTypeList(tokens);
+		}
+		else
+			implementations = new LinkedList<Type>();
+		return implementations;
+	}
+	
+	private List<Type> parseInheritanceList(Queue<Token> tokens)
+	{
+		List<Type> inheritances = null;
+		if(tokens.size() >= 2 && tokens.peek().getValue().equals("extends"))
+		{
+			tokens.poll();
+			inheritances = parseTypeList(tokens);
+		}
+		else
+			inheritances = new LinkedList<Type>();
+		return inheritances;
+	}
+
+	private List<Type> parseTypeList(Queue<Token> tokens)
+	{
+		List<Type> typeList = new LinkedList<Type>();
+		while(tokens.size() > 0)
+		{
+			typeList.add(new Type(tokens.poll().getValue()));
+			if(tokens.size() > 0 && tokens.peek().getValue().equals(","))
 			{
-				implementations.add(new Type(tokens.poll().getValue()));
-				if(tokens.size() > 0 && tokens.peek().getValue().equals(","))
-				{
-					tokens.poll();
-				}
+				tokens.poll();
 			}
 		}
-		return implementations;
+		return typeList;
 	}
 
 	/* Level 1*/

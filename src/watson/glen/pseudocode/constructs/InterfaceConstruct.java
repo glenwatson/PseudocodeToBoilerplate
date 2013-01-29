@@ -6,27 +6,44 @@ import java.util.List;
 public class InterfaceConstruct extends FirstClassMember
 {
 	private List<MethodSignature> methodSignatures;
-
-	public InterfaceConstruct(AccessModifier modifier, String interfaceName)
+	private List<Type> inheritances;
+	
+	public InterfaceConstruct(AccessModifier modifier, String name, List<MethodSignature> methodSignatures, List<Type> inheritances)
 	{
-		super(modifier, interfaceName);
-		this.methodSignatures = new ArrayList<MethodSignature>();
+		super(modifier, name);
+		this.methodSignatures = methodSignatures;
+		this.inheritances = inheritances;
 	}
-
+	
 	public InterfaceConstruct(AccessModifier modifier, String interfaceName, List<MethodSignature> methodSignatures)
 	{
-		super(modifier, interfaceName);
-		this.methodSignatures = methodSignatures;
+		this(modifier, interfaceName, methodSignatures, new ArrayList<Type>());
 	}
-
+	
+	public InterfaceConstruct(AccessModifier modifier, String interfaceName)
+	{
+		this(modifier, interfaceName, new ArrayList<MethodSignature>());
+	}
+	
 	public List<MethodSignature> getMethodSignatures()
 	{
 		return methodSignatures;
 	}
-
+	
 	public void setMethodSignatures(List<MethodSignature> methodSignatures)
 	{
 		this.methodSignatures = methodSignatures;
+	}
+	
+	
+	public List<Type> getInheritances()
+	{
+		return inheritances;
+	}
+
+	public void setInheritances(List<Type> inheritances)
+	{
+		this.inheritances = inheritances;
 	}
 
 	@Override
@@ -36,6 +53,16 @@ public class InterfaceConstruct extends FirstClassMember
 		sb.append(modifier);
 		sb.append(" interface ");
 		sb.append(name);
+		if (inheritances.size() > 0)
+		{
+			sb.append(" extends ");
+			for (Type implementation : inheritances)
+			{
+				sb.append(implementation.getName());
+				sb.append(", ");
+			}
+			sb.delete(sb.length() - 2, sb.length());
+		}
 		sb.append("\r\n");
 		
 		return sb.toString();
