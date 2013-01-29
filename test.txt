@@ -3,7 +3,7 @@
 	- instanceVar2 : int
 	# instanceVar3 : float
 	~ instanceVar4 : double
-	+ staticVar5 : boolean
+	+ _ staticVar5 : boolean
 	
 	+ derp() : void
 		gal
@@ -15,9 +15,9 @@
 	+ glen(grant : String, dale : String) : void
 		more derp
 	+ glen(grant : String, meh : int) : void
-	- jeff() : String
+	~ _jeff() : String
 	# mom(glen : float, dale : String, grant : double, dad : byte) : int
-	- _jeff() : _String
+	- _jeff() : String
 	+ her_e() : vo_id
 		// comment comment comment comment comment comment comment comment comment comment comment comment comment comment
 		/*
