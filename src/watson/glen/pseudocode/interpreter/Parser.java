@@ -10,6 +10,7 @@ import watson.glen.pseudocode.constructs.ClassConstruct;
 import watson.glen.pseudocode.constructs.Comment;
 import watson.glen.pseudocode.constructs.EnumConstruct;
 import watson.glen.pseudocode.constructs.FirstClassMember;
+import watson.glen.pseudocode.constructs.InstanceVariable;
 import watson.glen.pseudocode.constructs.InterfaceConstruct;
 import watson.glen.pseudocode.constructs.LanguageConstruct;
 import watson.glen.pseudocode.constructs.Method;
@@ -30,11 +31,11 @@ public class Parser
 	private final String TAB = "\t";
 	List<LanguageConstruct> constructs = new LinkedList<LanguageConstruct>();
 	private Level0State lvl0State;
-	private ClassConstruct lastClass;
+	private ClassConstruct currentClass;
 	private InterfaceConstruct lastInterface;
 	private EnumConstruct lastEnum;
 	
-	private Method lastMethod;
+	private Method currentMethod;
 	/*
 	//method signature regex
 	private static final String tabs = "("+TAB+")*";
@@ -100,7 +101,7 @@ public class Parser
 		switch(lvl0State)
 		{
 			case Class:
-				return lastClass;
+				return currentClass;
 			case Interface:
 				return lastInterface;
 			case Enum:
@@ -121,8 +122,8 @@ public class Parser
 			{
 				case "class":
 					lvl0State = Level0State.Class;
-					lastClass = new ClassConstruct(modifier, name);
-					constructs.add(lastClass);
+					currentClass = new ClassConstruct(modifier, name);
+					constructs.add(currentClass);
 					//TODO: parse extends/implements
 					break;
 				case "interface":
@@ -194,10 +195,36 @@ public class Parser
 
 	private void parseClassInternals(Queue<Token> tokens) throws NotAMethodSignatureException, MissingAccessModifierException
 	{
-		// TODO: parse instance variables
-		MethodSignature signature = parseMethodSignature(tokens);
-		lastMethod = new Method(signature);
-		lastClass.getMethods().add(lastMethod);
+		if(tokens.size() > 0)
+		{
+			//parse either an class level variable or a method
+			AccessModifier modifier = parseModifier(tokens);
+			boolean isStatic = parseStatic(tokens);
+			String name = parseName(tokens);
+			String nextToken = tokens.peek().getValue();
+			if(nextToken.equals(":"))
+			{
+				tokens.poll(); //eat the colon
+				String returnType = parseType(tokens);
+				VariableDeclaration declaration = new VariableDeclaration(returnType, name);
+				if(tokens.size() >= 2 && tokens.poll().getValue().equals("="))
+				{
+					String initalVariableValue = tokens.poll().getValue();
+					declaration.setInitalValue(initalVariableValue);
+				}
+				InstanceVariable instanceVar = new InstanceVariable(modifier, declaration);
+				currentClass.getInstanceVariables().add(instanceVar);
+			} else if(nextToken.equals("("))
+			{
+				List<VariableDeclaration> parameters = parseParameterList(tokens);
+				if(!tokens.poll().getValue().equals(":"))
+					throw new NotAMethodSignatureException("Missing colon (:) preceding return type on method signature");
+				String returnType = parseType(tokens);
+				MethodSignature signature = new MethodSignature(modifier, isStatic, returnType, name, parameters);
+				currentMethod = new Method(signature);
+				currentClass.getMethods().add(currentMethod);
+			}
+		}
 	}
 
 	private void parseInterfaceMethodSignature(Queue<Token> tokens) throws NotAMethodSignatureException, MissingAccessModifierException
@@ -222,7 +249,7 @@ public class Parser
 		switch(lvl0State)
 		{
 			case Class: //Actual code
-				lastMethod.getLines().add(parseComment(tokens));
+				currentMethod.getLines().add(parseComment(tokens));
 				break;
 			case Interface: //Umm, no?
 				//throw new 
@@ -250,30 +277,16 @@ public class Parser
 	{
 		AccessModifier modifier = parseModifier(tokens);
 		boolean isStatic = parseStatic(tokens);
-		String name = parseName(tokens);
-		String nextToken = tokens.peek().getValue();
-		if(nextToken.equals(":"))
-		{
-			tokens.poll(); //eat the colon
-			String returnType = parseType(tokens);
-			VariableDeclaration declaration = new VariableDeclaration(returnType, name);
-			if(tokens.size() >= 2 && tokens.poll().getValue().equals("="))
-			{
-				String initalVariableValue = tokens.poll().getValue();
-				declaration.setInitalValue(initalVariableValue);
-			}
-		} else if(nextToken.equals("("))
-		{
-			List<VariableDeclaration> parameters = parseParameterList(tokens);
-			if(!tokens.poll().getValue().equals(":"))
-				throw new NotAMethodSignatureException("Missing colon (:) preceding return type on method signature");
-			String returnType = parseType(tokens);
-			MethodSignature sig = new MethodSignature(modifier, isStatic, returnType, name, parameters);
-		}
+		String methodName = parseName(tokens);
+		List<VariableDeclaration> parameters = parseParameterList(tokens);
+		if(!tokens.poll().getValue().equals(":"))
+			throw new NotAMethodSignatureException("Missing colon (:) preceding return type on method signature");
+		String returnType = parseType(tokens);
 		
+		MethodSignature sig = new MethodSignature(modifier, isStatic, returnType, methodName, parameters);
 		return sig;
 	}
-
+	
 	private Queue<Token> toTokenQueue(List<Token> tokenList)
 	{
 		LinkedList<Token> llQueue = new LinkedList<>(tokenList);
