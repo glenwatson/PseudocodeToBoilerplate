@@ -15,6 +15,7 @@ import watson.glen.pseudocode.constructs.InterfaceConstruct;
 import watson.glen.pseudocode.constructs.LanguageConstruct;
 import watson.glen.pseudocode.constructs.Method;
 import watson.glen.pseudocode.constructs.MethodSignature;
+import watson.glen.pseudocode.constructs.Type;
 import watson.glen.pseudocode.constructs.VariableDeclaration;
 import watson.glen.pseudocode.interpreter.exception.MissingAccessModifierException;
 import watson.glen.pseudocode.interpreter.exception.NotAMethodSignatureException;
@@ -206,7 +207,7 @@ public class Parser
 			{
 				tokens.poll(); //eat the colon
 				String returnType = parseType(tokens);
-				VariableDeclaration declaration = new VariableDeclaration(returnType, name);
+				VariableDeclaration declaration = new VariableDeclaration(new Type(returnType), name);
 				if(tokens.size() >= 2 && tokens.poll().getValue().equals("="))
 				{
 					String initalVariableValue = tokens.poll().getValue();
@@ -220,7 +221,7 @@ public class Parser
 				if(!tokens.poll().getValue().equals(":"))
 					throw new NotAMethodSignatureException("Missing colon (:) preceding return type on method signature");
 				String returnType = parseType(tokens);
-				MethodSignature signature = new MethodSignature(modifier, isStatic, returnType, name, parameters);
+				MethodSignature signature = new MethodSignature(modifier, isStatic, new Type(returnType), name, parameters);
 				currentMethod = new Method(signature);
 				currentClass.getMethods().add(currentMethod);
 			}
@@ -283,7 +284,7 @@ public class Parser
 			throw new NotAMethodSignatureException("Missing colon (:) preceding return type on method signature");
 		String returnType = parseType(tokens);
 		
-		MethodSignature sig = new MethodSignature(modifier, isStatic, returnType, methodName, parameters);
+		MethodSignature sig = new MethodSignature(modifier, isStatic, new Type(returnType), methodName, parameters);
 		return sig;
 	}
 	
@@ -354,7 +355,7 @@ public class Parser
 		if(!tokens.poll().getValue().equals(":"))
 			throw new NotAMethodSignatureException("No \":\" in parameter list variable declaration");
 		String type = tokens.poll().getValue();
-		return new VariableDeclaration(type, variableName);
+		return new VariableDeclaration(new Type(type), variableName);
 	}
 
 	private String parseName(Queue<Token> tokens)

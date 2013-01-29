@@ -2,31 +2,29 @@ package watson.glen.pseudocode.constructs;
 
 public class VariableDeclaration
 {
-	private String type;
+	private Type type;
 	private String variableName;
 	private String initalValue;
 	
-	public VariableDeclaration(String type, String variableName)
+	public VariableDeclaration(Type type, String variableName)
 	{
 		super();
 		this.type = type;
 		this.variableName = variableName;
 	}
 	
-	public VariableDeclaration(String type, String variableName, String initalValue)
+	public VariableDeclaration(Type type, String variableName, String initalValue)
 	{
-		super();
-		this.type = type;
-		this.variableName = variableName;
+		this(type, variableName);
 		this.initalValue = initalValue;
 	}
 
-	public String getType()
+	public Type getType()
 	{
 		return type;
 	}
 	
-	public void setType(String type)
+	public void setType(Type type)
 	{
 		this.type = type;
 	}
