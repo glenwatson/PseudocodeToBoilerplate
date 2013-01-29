@@ -33,8 +33,8 @@ public class Parser
 	List<LanguageConstruct> constructs = new LinkedList<LanguageConstruct>();
 	private Level0State lvl0State;
 	private ClassConstruct currentClass;
-	private InterfaceConstruct lastInterface;
-	private EnumConstruct lastEnum;
+	private InterfaceConstruct currentInterface;
+	private EnumConstruct currentEnum;
 	
 	private Method currentMethod;
 	/*
@@ -104,9 +104,9 @@ public class Parser
 			case Class:
 				return currentClass;
 			case Interface:
-				return lastInterface;
+				return currentInterface;
 			case Enum:
-				return lastEnum;
+				return currentEnum;
 		}
 		return null;
 	}
@@ -129,14 +129,14 @@ public class Parser
 					break;
 				case "interface":
 					lvl0State = Level0State.Interface;
-					lastInterface = new InterfaceConstruct(modifier, name);
-					constructs.add(lastInterface);
+					currentInterface = new InterfaceConstruct(modifier, name);
+					constructs.add(currentInterface);
 					//TODO: parse extends or implements?
 					break;
 				case "enum":
 					lvl0State = Level0State.Enum;
-					lastEnum = new EnumConstruct(modifier, name);
-					constructs.add(lastEnum);
+					currentEnum = new EnumConstruct(modifier, name);
+					constructs.add(currentEnum);
 					break;
 				default:
 					lvl0State = null;
@@ -152,7 +152,6 @@ public class Parser
 		//	parse the values
 		//	update lvl0State
 	}
-	
 	
 	/* Level 1*/
 	private void parseLevel1(Queue<Token> tokens)
@@ -238,7 +237,7 @@ public class Parser
 		while(tokens.size() > 0)
 		{
 			String value = tokens.poll().getValue();
-			lastEnum.getEnumNames().add(value);
+			currentEnum.getEnumNames().add(value);
 			if(tokens.size()>0 && tokens.peek().equals(","))
 				tokens.poll();
 		}
@@ -310,7 +309,6 @@ public class Parser
 		return false;
 	}
 	
-	//TODO should return an object
 	private Type parseType(Queue<Token> tokens) throws NotAMethodSignatureException
 	{
 		if(tokens.size() == 0)
