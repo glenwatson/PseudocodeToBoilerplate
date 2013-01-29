@@ -1,4 +1,4 @@
-+ class glen
++ class Glen extends A implements B, C, D, E, F
 	+ instanceVar1 : String
 	- instanceVar2 : int
 	# instanceVar3 : float
@@ -27,3 +27,10 @@
 																lol tabs!
 		*/
 		
++ class Dale
+
++ class Grant extends A
+
++ class Darren implements B
+
++ class Griffen implements B, C, D, E

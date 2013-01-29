@@ -72,17 +72,20 @@ public class Parser
 	{
 		Queue<Token> tokenQueue = toTokenQueue(tokens);
 		int indentionLevel = getIndendation(tokenQueue);
-		switch(indentionLevel)
+		if(tokens.size() > 0)
 		{
-			case 0: //Class, Interface, Enum
-				parseLevel0(tokenQueue);
-				break;
-			case 1:
-				parseLevel1(tokenQueue);
-				break;
-			default:
-				parseLevelGreaterThan2(tokenQueue);
-				break;
+			switch(indentionLevel)
+			{
+				case 0: //Class, Interface, Enum
+					parseLevel0(tokenQueue);
+					break;
+				case 1:
+					parseLevel1(tokenQueue);
+					break;
+				default:
+					parseLevelGreaterThan2(tokenQueue);
+					break;
+			}
 		}
 	}
 	
@@ -125,7 +128,17 @@ public class Parser
 					lvl0State = Level0State.Class;
 					currentClass = new ClassConstruct(modifier, name);
 					constructs.add(currentClass);
-					//TODO: parse extends/implements
+					//TODO: parse extends/implements'
+					Type superClass = parseInheritance(tokens);
+					if(superClass != null)
+					{
+						currentClass.setInheritance(superClass);
+					}
+					List<Type> implementations = parseImplementations(tokens);
+					if(implementations.size() > 0)
+					{
+						currentClass.setImplementations(implementations);
+					}
 					break;
 				case "interface":
 					lvl0State = Level0State.Interface;
@@ -153,6 +166,35 @@ public class Parser
 		//	update lvl0State
 	}
 	
+	private Type parseInheritance(Queue<Token> tokens)
+	{
+		Type type = null;
+		if(tokens.size() >= 2 && tokens.peek().getValue().equals("extends"))
+		{
+			tokens.poll();
+			type = new Type(tokens.poll().getValue());
+		}
+		return type;
+	}
+	
+	private List<Type> parseImplementations(Queue<Token> tokens)
+	{
+		List<Type> implementations = new LinkedList<Type>();
+		if(tokens.size() >= 2 && tokens.peek().getValue().equals("implements"))
+		{
+			tokens.poll();
+			while(tokens.size() > 0)
+			{
+				implementations.add(new Type(tokens.poll().getValue()));
+				if(tokens.size() > 0 && tokens.peek().getValue().equals(","))
+				{
+					tokens.poll();
+				}
+			}
+		}
+		return implementations;
+	}
+
 	/* Level 1*/
 	private void parseLevel1(Queue<Token> tokens)
 	{

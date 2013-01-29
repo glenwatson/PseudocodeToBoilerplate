@@ -28,12 +28,15 @@ public class LineToken
 	{
 		StringBuilder sb = new StringBuilder();
 		
-		for(Token token : tokens)
+		if(tokens.size() > 0)
 		{
-			sb.append(token.getValue());
-			sb.append(' ');
+			for(Token token : tokens)
+			{
+				sb.append(token.getValue());
+				sb.append(' ');
+			}
+			sb.deleteCharAt(sb.length()-1);
 		}
-		sb.deleteCharAt(sb.length()-1);
 		
 		return sb.toString();
 		

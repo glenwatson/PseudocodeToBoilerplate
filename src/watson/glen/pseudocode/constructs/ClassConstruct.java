@@ -5,12 +5,12 @@ import java.util.List;
 
 public class ClassConstruct extends FirstClassMember
 {
-	private String inheritance;
-	private List<String> implementations;
+	private Type inheritance;
+	private List<Type> implementations;
 	private List<InstanceVariable> instanceVariables;
 	private List<Method> methods;
 	
-	public ClassConstruct(AccessModifier modifier, String className, String inheritance, List<String> implementations,
+	public ClassConstruct(AccessModifier modifier, String className, Type inheritance, List<Type> implementations,
 			List<InstanceVariable> instanceVariables, List<Method> methods)
 	{
 		super(modifier, className);
@@ -19,16 +19,16 @@ public class ClassConstruct extends FirstClassMember
 		this.instanceVariables = instanceVariables;
 		this.methods = methods;
 	}
-	public ClassConstruct(AccessModifier modifier, String className, List<String> implementations, List<InstanceVariable> instanceVariables,
+	public ClassConstruct(AccessModifier modifier, String className, List<Type> implementations, List<InstanceVariable> instanceVariables,
 			List<Method> methods)
 	{
 		this(modifier, className, null, implementations, instanceVariables, methods);
 	}
-	public ClassConstruct(AccessModifier modifier, String className, String inheritance, List<InstanceVariable> instanceVariables, List<Method> methods)
+	public ClassConstruct(AccessModifier modifier, String className, Type inheritance, List<InstanceVariable> instanceVariables, List<Method> methods)
 	{
-		this(modifier, className, new ArrayList<String>(), instanceVariables, methods);
+		this(modifier, className, new ArrayList<Type>(), instanceVariables, methods);
 	}
-	public ClassConstruct(AccessModifier modifier, String className, String inheritance, List<Method> methods)
+	public ClassConstruct(AccessModifier modifier, String className, Type inheritance, List<Method> methods)
 	{
 		this(modifier, className, inheritance, new ArrayList<InstanceVariable>(), methods);
 	}
@@ -37,22 +37,22 @@ public class ClassConstruct extends FirstClassMember
 		this(modifier, className, null, new ArrayList<Method>());
 	}
 
-	public String getInheritance()
+	public Type getInheritance()
 	{
 		return inheritance;
 	}
 
-	public void setInheritance(String inheritance)
+	public void setInheritance(Type inheritance)
 	{
 		this.inheritance = inheritance;
 	}
 
-	public List<String> getImplementations()
+	public List<Type> getImplementations()
 	{
 		return implementations;
 	}
 
-	public void setImplementations(List<String> implementations)
+	public void setImplementations(List<Type> implementations)
 	{
 		this.implementations = implementations;
 	}
@@ -89,13 +89,16 @@ public class ClassConstruct extends FirstClassMember
 			sb.append(" extends ");
 			sb.append(inheritance);
 		}
-		sb.append(" ");
-		for(String implementation : implementations)
+		if(implementations.size() > 0)
 		{
-			sb.append(implementation);
-			sb.append(", ");
+			sb.append(" implements ");
+			for(Type implementation : implementations)
+			{
+				sb.append(implementation.getName());
+				sb.append(", ");
+			}
+			sb.delete(sb.length()-2, sb.length());
 		}
-		sb.deleteCharAt(sb.length()-1);
 		sb.append("\r\n{\r\n");
 		
 		for(InstanceVariable instanceVariable : instanceVariables)
@@ -110,7 +113,7 @@ public class ClassConstruct extends FirstClassMember
 			sb.append(method);
 			sb.append("\r\n");
 		}
-		sb.append("}");
+		sb.append("}\r\n");
 		
 		return sb.toString();
 	}
