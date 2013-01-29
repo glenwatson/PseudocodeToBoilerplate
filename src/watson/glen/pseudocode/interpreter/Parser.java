@@ -206,8 +206,8 @@ public class Parser
 			if(nextToken.equals(":"))
 			{
 				tokens.poll(); //eat the colon
-				String returnType = parseType(tokens);
-				VariableDeclaration declaration = new VariableDeclaration(new Type(returnType), name);
+				Type returnType = parseType(tokens);
+				VariableDeclaration declaration = new VariableDeclaration(returnType, name);
 				if(tokens.size() >= 2 && tokens.poll().getValue().equals("="))
 				{
 					String initalVariableValue = tokens.poll().getValue();
@@ -220,8 +220,8 @@ public class Parser
 				List<VariableDeclaration> parameters = parseParameterList(tokens);
 				if(!tokens.poll().getValue().equals(":"))
 					throw new NotAMethodSignatureException("Missing colon (:) preceding return type on method signature");
-				String returnType = parseType(tokens);
-				MethodSignature signature = new MethodSignature(modifier, isStatic, new Type(returnType), name, parameters);
+				Type returnType = parseType(tokens);
+				MethodSignature signature = new MethodSignature(modifier, isStatic, returnType, name, parameters);
 				currentMethod = new Method(signature);
 				currentClass.getMethods().add(currentMethod);
 			}
@@ -282,9 +282,9 @@ public class Parser
 		List<VariableDeclaration> parameters = parseParameterList(tokens);
 		if(!tokens.poll().getValue().equals(":"))
 			throw new NotAMethodSignatureException("Missing colon (:) preceding return type on method signature");
-		String returnType = parseType(tokens);
+		Type returnType = parseType(tokens);
 		
-		MethodSignature sig = new MethodSignature(modifier, isStatic, new Type(returnType), methodName, parameters);
+		MethodSignature sig = new MethodSignature(modifier, isStatic, returnType, methodName, parameters);
 		return sig;
 	}
 	
@@ -311,11 +311,11 @@ public class Parser
 	}
 	
 	//TODO should return an object
-	private String parseType(Queue<Token> tokens) throws NotAMethodSignatureException
+	private Type parseType(Queue<Token> tokens) throws NotAMethodSignatureException
 	{
 		if(tokens.size() == 0)
 			throw new NotAMethodSignatureException("No type given");
-		return tokens.poll().getValue();
+		return new Type(tokens.poll().getValue());
 	}
 
 	private List<VariableDeclaration> parseParameterList(Queue<Token> tokens) throws NotAMethodSignatureException
