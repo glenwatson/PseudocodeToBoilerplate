@@ -34,3 +34,10 @@
 + class Darren implements B
 
 + class Griffen implements B, C, D, E
+
++ interface George
+	+ yes() : void
+	- no() : int
+	# maybe(questionable : boolean) : Go
+	
++ interface Jared extends George

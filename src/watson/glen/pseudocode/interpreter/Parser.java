@@ -72,7 +72,7 @@ public class Parser
 	{
 		Queue<Token> tokenQueue = toTokenQueue(tokens);
 		int indentionLevel = getIndendation(tokenQueue);
-		if(tokens.size() > 0)
+		if(tokenQueue.size() > 0)
 		{
 			switch(indentionLevel)
 			{
@@ -296,7 +296,8 @@ public class Parser
 
 	private void parseInterfaceMethodSignature(Queue<Token> tokens) throws NotAMethodSignatureException, MissingAccessModifierException
 	{
-		parseMethodSignature(tokens);
+		MethodSignature methodSig = parseMethodSignature(tokens);
+		currentInterface.getMethodSignatures().add(methodSig);
 	}
 
 	private void parseEnumValues(Queue<Token> tokens)

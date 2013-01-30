@@ -35,17 +35,16 @@ public class InterfaceConstruct extends FirstClassMember
 		this.methodSignatures = methodSignatures;
 	}
 	
-	
 	public List<Type> getInheritances()
 	{
 		return inheritances;
 	}
-
+	
 	public void setInheritances(List<Type> inheritances)
 	{
 		this.inheritances = inheritances;
 	}
-
+	
 	@Override
 	public String toString()
 	{
@@ -63,9 +62,18 @@ public class InterfaceConstruct extends FirstClassMember
 			}
 			sb.delete(sb.length() - 2, sb.length());
 		}
-		sb.append("\r\n");
+		sb.append("\r\n{\r\n");
 		
+		if (methodSignatures.size() > 0)
+			for (MethodSignature signature : methodSignatures)
+			{
+				sb.append(signature);
+				sb.append("\r\n");
+			}
+		else
+			sb.append("\r\n");
+		
+		sb.append("}\r\n");
 		return sb.toString();
 	}
-	
 }
