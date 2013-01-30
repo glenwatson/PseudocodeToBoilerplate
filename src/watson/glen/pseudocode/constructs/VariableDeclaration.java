@@ -54,7 +54,7 @@ public class VariableDeclaration
 	{
 		String result = type + " " + variableName;
 		if(initalValue != null)
-			result += initalValue;
+			result += " = " + initalValue;
 		return result;
 	}
 }

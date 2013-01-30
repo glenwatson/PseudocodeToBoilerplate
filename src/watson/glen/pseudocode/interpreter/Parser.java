@@ -267,6 +267,7 @@ public class Parser
 			//parse either an class level variable or a method
 			AccessModifier modifier = parseModifier(tokens);
 			boolean isStatic = parseStatic(tokens);
+			boolean isFinal = parseFinal(tokens);
 			String name = parseName(tokens);
 			String nextToken = tokens.peek().getValue();
 			if(nextToken.equals(":"))
@@ -279,7 +280,7 @@ public class Parser
 					String initalVariableValue = tokens.poll().getValue();
 					declaration.setInitalValue(initalVariableValue);
 				}
-				InstanceVariable instanceVar = new InstanceVariable(modifier, declaration);
+				InstanceVariable instanceVar = new InstanceVariable(modifier, declaration, isStatic, isFinal);
 				currentClass.getInstanceVariables().add(instanceVar);
 			} else if(nextToken.equals("("))
 			{
@@ -370,6 +371,17 @@ public class Parser
 	private boolean parseStatic(Queue<Token> tokens)
 	{
 		if(tokens.size() > 0 && tokens.peek().getValue().equals("_"))
+		{
+			tokens.poll();
+			return true;
+		}
+		return false;
+	}
+	
+	private boolean parseFinal(Queue<Token> tokens)
+	{
+		// find a symbol to represent the final keyword
+		if(tokens.size() > 0 && tokens.peek().getValue().equals("final"))
 		{
 			tokens.poll();
 			return true;

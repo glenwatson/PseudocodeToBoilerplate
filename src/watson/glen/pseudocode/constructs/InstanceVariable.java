@@ -4,12 +4,21 @@ public class InstanceVariable extends SecondClassMember
 {
 	private AccessModifier modifier;
 	private VariableDeclaration variable;
+	private boolean isStatic;
+	private boolean isFinal;
 	
-	public InstanceVariable(AccessModifier modifier, VariableDeclaration variable)
+	public InstanceVariable(AccessModifier modifier, VariableDeclaration variable, boolean isStatic, boolean isFinal)
 	{
 		super();
 		this.modifier = modifier;
 		this.variable = variable;
+		this.isStatic = isStatic;
+		this.isFinal = isFinal;
+	}
+
+	public InstanceVariable(AccessModifier modifier, VariableDeclaration variable)
+	{
+		this(modifier, variable, false, false);
 	}
 	
 	public AccessModifier getModifier()
@@ -32,6 +41,26 @@ public class InstanceVariable extends SecondClassMember
 		this.variable = variable;
 	}
 	
+	public boolean isStatic()
+	{
+		return isStatic;
+	}
+
+	public void setStatic(boolean isStatic)
+	{
+		this.isStatic = isStatic;
+	}
+
+	public boolean isFinal()
+	{
+		return isFinal;
+	}
+
+	public void setFinal(boolean isFinal)
+	{
+		this.isFinal = isFinal;
+	}
+
 	@Override
 	public String getName()
 	{
@@ -48,6 +77,10 @@ public class InstanceVariable extends SecondClassMember
 			sb.append(modifier);
 			sb.append(" ");
 		}
+		if(isStatic)
+			sb.append("static ");
+		if(isFinal)
+			sb.append("final ");
 		sb.append(variable);
 		return sb.toString();
 	}
