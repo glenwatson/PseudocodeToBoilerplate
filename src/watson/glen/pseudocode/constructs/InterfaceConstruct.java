@@ -50,7 +50,7 @@ public class InterfaceConstruct extends FirstClassMember
 	{
 		StringBuilder sb = new StringBuilder();
 		sb.append(modifier);
-		sb.append(" interface ");
+		sb.append("interface ");
 		sb.append(name);
 		if (inheritances.size() > 0)
 		{

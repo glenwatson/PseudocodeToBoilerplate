@@ -75,7 +75,6 @@ public class InstanceVariable extends SecondClassMember
 		if(modifier != AccessModifier.defaultModifier)
 		{
 			sb.append(modifier);
-			sb.append(" ");
 		}
 		if(isStatic)
 			sb.append("static ");

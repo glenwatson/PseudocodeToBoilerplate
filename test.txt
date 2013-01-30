@@ -4,6 +4,7 @@
 	# instanceVar3 : float
 	~ instanceVar4 : double
 	+ _ staticVar5 : boolean
+	~ _ staticVar6 : String
 	
 	+ derp() : void
 		gal
