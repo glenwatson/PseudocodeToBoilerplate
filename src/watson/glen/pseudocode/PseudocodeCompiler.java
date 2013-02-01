@@ -5,10 +5,10 @@ import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
 
+import watson.glen.pseudocode.codegenerator.CodeGeneratable;
+import watson.glen.pseudocode.codegenerator.CodeRepresentation;
 import watson.glen.pseudocode.constructs.LanguageConstruct;
 import watson.glen.pseudocode.interpreter.Parser;
-import watson.glen.pseudocode.languagewriter.CodeGeneratable;
-import watson.glen.pseudocode.languagewriter.CodeRepresentation;
 import watson.glen.pseudocode.tokenizer.LineToken;
 import watson.glen.pseudocode.tokenizer.Tokenizer;
 

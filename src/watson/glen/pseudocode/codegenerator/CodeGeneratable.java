@@ -1,4 +1,4 @@
-package watson.glen.pseudocode.languagewriter;
+package watson.glen.pseudocode.codegenerator;
 
 import watson.glen.pseudocode.constructs.LanguageConstruct;
 
