@@ -16,6 +16,7 @@ public class CodeWriter
 	}
 	public static void WriteCode(CodeRepresentation code) throws IOException
 	{
+		System.out.println("Writing to "+code.getFilePath());
 		File f = new File(code.getFilePath());
 		
 		FileWriter fw = new FileWriter(f, true);

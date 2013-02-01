@@ -2,13 +2,13 @@ package watson.glen.pseudocode.codegenerator;
 
 import watson.glen.pseudocode.constructs.LanguageConstruct;
 
-public class Java implements CodeGeneratable
+public class JavaGenerator implements CodeGeneratable
 {
 	
 	@Override
 	public CodeRepresentation generate(LanguageConstruct construct)
 	{
-		return null;
+		throw new RuntimeException("Not implemented");
 	}
 	
 }

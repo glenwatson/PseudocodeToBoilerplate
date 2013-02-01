@@ -8,7 +8,7 @@ import java.util.List;
 
 import watson.glen.pseudocode.codegenerator.CodeGeneratable;
 import watson.glen.pseudocode.codegenerator.CodeRepresentation;
-import watson.glen.pseudocode.codegenerator.Java;
+import watson.glen.pseudocode.codegenerator.JavaGenerator;
 import watson.glen.pseudocode.constructs.LanguageConstruct;
 import watson.glen.pseudocode.interpreter.Parser;
 import watson.glen.pseudocode.tokenizer.LineToken;
@@ -43,9 +43,7 @@ public class PseudocodeCompiler
 		List<LineToken> lineTokens = Tokenizer.tokenize(inStream);
 		List<LanguageConstruct> constructs = new Parser().interpret(lineTokens);
 		
-		dumpConstructs(constructs);
-		
-		List<CodeRepresentation> languageRepresentation = generate(new Java(), constructs);
+		List<CodeRepresentation> languageRepresentation = generate(new JavaGenerator(), constructs);
 		
 		try
 		{
@@ -69,11 +67,4 @@ public class PseudocodeCompiler
 		return representations;
 	}
 	
-	private static void dumpConstructs(List<LanguageConstruct> constructs)
-	{
-		for(LanguageConstruct construct : constructs)
-		{
-			System.out.println(construct);			
-		}
-	}
 }
