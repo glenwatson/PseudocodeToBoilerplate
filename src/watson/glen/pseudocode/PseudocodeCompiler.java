@@ -25,7 +25,16 @@ public class PseudocodeCompiler
 	 */
 	public static void main(String[] args) throws FileNotFoundException
 	{
-		String fileName = "test.txt";
+		String fileName;
+		if(args.length >= 1)
+		{
+			fileName = args[0];
+		}
+		else
+		{
+			System.out.println("Please supply a text file to parse");
+			fileName = "test.txt";
+		}
 		FileInputStream inStream = new FileInputStream(fileName);
 		
 		List<LineToken> lineTokens = Tokenizer.tokenize(inStream);
