@@ -2,15 +2,18 @@ package watson.glen.pseudocode;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
 import watson.glen.pseudocode.codegenerator.CodeGeneratable;
 import watson.glen.pseudocode.codegenerator.CodeRepresentation;
+import watson.glen.pseudocode.codegenerator.Java;
 import watson.glen.pseudocode.constructs.LanguageConstruct;
 import watson.glen.pseudocode.interpreter.Parser;
 import watson.glen.pseudocode.tokenizer.LineToken;
 import watson.glen.pseudocode.tokenizer.Tokenizer;
+import watson.glen.pseudocode.writer.CodeWriter;
 
 /**
  * @author glen.watson
@@ -40,12 +43,23 @@ public class PseudocodeCompiler
 		List<LineToken> lineTokens = Tokenizer.tokenize(inStream);
 		List<LanguageConstruct> constructs = new Parser().interpret(lineTokens);
 		
-		
 		dumpConstructs(constructs);
-//		new Scanner(System.in).nextLine();
+		
+		List<CodeRepresentation> languageRepresentation = generate(new Java(), constructs);
+		
+		try
+		{
+			CodeWriter.WriteCode(languageRepresentation);
+		} catch (IOException e)
+		{
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		
+		System.out.println("Complete");
 	}
 	
-	private List<CodeRepresentation> generate(CodeGeneratable generator, List<LanguageConstruct> constructs)
+	private static List<CodeRepresentation> generate(CodeGeneratable generator, List<LanguageConstruct> constructs)
 	{
 		List<CodeRepresentation> representations = new LinkedList<>();
 		for(LanguageConstruct construct : constructs)
