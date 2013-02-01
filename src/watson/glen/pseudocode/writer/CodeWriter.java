@@ -1,9 +1,11 @@
-package watson.glen.pseudocode.codegenerator;
+package watson.glen.pseudocode.writer;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
+
+import watson.glen.pseudocode.codegenerator.CodeRepresentation;
 
 public class CodeWriter
 {
