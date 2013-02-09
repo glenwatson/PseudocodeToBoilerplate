@@ -7,10 +7,6 @@ import watson.glen.pseudocode.constructs.InstanceVariable;
 import watson.glen.pseudocode.constructs.InterfaceConstruct;
 import watson.glen.pseudocode.constructs.LanguageConstruct;
 import watson.glen.pseudocode.constructs.Method;
-import watson.glen.pseudocode.constructs.MethodLine;
-import watson.glen.pseudocode.constructs.MethodSignature;
-import watson.glen.pseudocode.constructs.Type;
-import watson.glen.pseudocode.constructs.VariableDeclaration;
 
 
 public class JavaGenerator implements CodeGeneratable
@@ -52,34 +48,20 @@ public class JavaGenerator implements CodeGeneratable
 		throw new RuntimeException("Not implemented");
 	}
 
-	@Override
-	public CodeRepresentation generate(VariableDeclaration variableDeclaration)
+	public String generate(AccessModifier accessModifier)
 	{
-		throw new RuntimeException("Not implemented");
+		String representation = null;
+		switch(accessModifier)
+		{
+			case publicModifier:
+				representation = "public ";
+			case privateModifier:
+				representation = "private ";
+			case protectedModifier:
+				representation = "protected ";
+			case defaultModifier:
+				representation = "";
+		}
+		return representation;
 	}
-
-	@Override
-	public CodeRepresentation generate(Type type)
-	{
-		throw new RuntimeException("Not implemented");
-	}
-
-	@Override
-	public CodeRepresentation generate(AccessModifier accessModifier)
-	{
-		throw new RuntimeException("Not implemented");
-	}
-
-	@Override
-	public CodeRepresentation generate(MethodLine methodLine)
-	{
-		throw new RuntimeException("Not implemented");
-	}
-
-	@Override
-	public CodeRepresentation generate(MethodSignature methodSignature)
-	{
-		throw new RuntimeException("Not implemented");
-	}
-	
 }
