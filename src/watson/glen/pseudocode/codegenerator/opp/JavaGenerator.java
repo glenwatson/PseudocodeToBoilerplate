@@ -1,14 +1,18 @@
-package watson.glen.pseudocode.codegenerator;
+package watson.glen.pseudocode.codegenerator.opp;
 
+import watson.glen.pseudocode.codegenerator.CodeRepresentation;
 import watson.glen.pseudocode.constructs.AccessModifier;
 import watson.glen.pseudocode.constructs.ClassConstruct;
 import watson.glen.pseudocode.constructs.EnumConstruct;
 import watson.glen.pseudocode.constructs.FirstClassMember;
+import watson.glen.pseudocode.constructs.InstanceVariable;
 import watson.glen.pseudocode.constructs.InterfaceConstruct;
+import watson.glen.pseudocode.constructs.Method;
 
 
-public class JavaGenerator implements CodeGeneratable
+public class JavaGenerator implements OOPCodeGeneratable
 {
+	
 	@Override
 	public CodeRepresentation generate(FirstClassMember firstClassConstruct)
 	{
@@ -29,6 +33,18 @@ public class JavaGenerator implements CodeGeneratable
 
 	@Override
 	public CodeRepresentation generate(InterfaceConstruct interfaceConstruct)
+	{
+		throw new RuntimeException("Not implemented");
+	}
+
+	@Override
+	public CodeRepresentation generate(InstanceVariable instanceVar)
+	{
+		throw new RuntimeException("Not implemented");
+	}
+
+	@Override
+	public CodeRepresentation generate(Method method)
 	{
 		throw new RuntimeException("Not implemented");
 	}

@@ -1,12 +1,15 @@
-package watson.glen.pseudocode.codegenerator;
+package watson.glen.pseudocode.codegenerator.opp;
 
+import watson.glen.pseudocode.codegenerator.CodeRepresentation;
 import watson.glen.pseudocode.constructs.ClassConstruct;
 import watson.glen.pseudocode.constructs.EnumConstruct;
 import watson.glen.pseudocode.constructs.FirstClassMember;
+import watson.glen.pseudocode.constructs.InstanceVariable;
 import watson.glen.pseudocode.constructs.InterfaceConstruct;
+import watson.glen.pseudocode.constructs.Method;
 
 
-public class CSharpGenerator implements CodeGeneratable
+public class CSharpGenerator implements OOPCodeGeneratable
 {
 
 	@Override
@@ -32,5 +35,16 @@ public class CSharpGenerator implements CodeGeneratable
 	{
 		throw new RuntimeException("Not implemented");
 	}
-	
+
+	@Override
+	public CodeRepresentation generate(InstanceVariable instanceVar)
+	{
+		throw new RuntimeException("Not implemented");
+	}
+
+	@Override
+	public CodeRepresentation generate(Method method)
+	{
+		throw new RuntimeException("Not implemented");
+	}
 }

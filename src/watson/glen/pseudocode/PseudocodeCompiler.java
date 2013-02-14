@@ -8,7 +8,7 @@ import java.util.List;
 
 import watson.glen.pseudocode.codegenerator.CodeGeneratable;
 import watson.glen.pseudocode.codegenerator.CodeRepresentation;
-import watson.glen.pseudocode.codegenerator.JavaGenerator;
+import watson.glen.pseudocode.codegenerator.opp.JavaGenerator;
 import watson.glen.pseudocode.constructs.FirstClassMember;
 import watson.glen.pseudocode.constructs.LanguageConstruct;
 import watson.glen.pseudocode.interpreter.Parser;
