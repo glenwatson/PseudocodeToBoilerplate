@@ -3,7 +3,7 @@ package watson.glen.pseudocode.constructs;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EnumConstruct extends FirstClassMember
+public class EnumConstruct extends FirstClassCitizen
 {
 	private List<String> enumNames;
 

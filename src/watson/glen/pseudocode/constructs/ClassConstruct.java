@@ -3,7 +3,7 @@ package watson.glen.pseudocode.constructs;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClassConstruct extends FirstClassMember
+public class ClassConstruct extends FirstClassCitizen
 {
 	private Type inheritance;
 	private List<Type> implementations;

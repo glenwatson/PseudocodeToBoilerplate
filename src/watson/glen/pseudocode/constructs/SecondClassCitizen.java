@@ -5,9 +5,9 @@ package watson.glen.pseudocode.constructs;
  * @author glen.watson
  *
  */
-public abstract class SecondClassMember extends LanguageConstruct
+public abstract class SecondClassCitizen extends LanguageConstruct
 {
-	public SecondClassMember()
+	public SecondClassCitizen()
 	{
 		super();
 	}

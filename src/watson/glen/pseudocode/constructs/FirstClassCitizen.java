@@ -4,12 +4,12 @@ package watson.glen.pseudocode.constructs;
  * @author glen.watson
  *
  */
-public abstract class FirstClassMember extends LanguageConstruct
+public abstract class FirstClassCitizen extends LanguageConstruct
 {
 	protected AccessModifier modifier;
 	protected String name;
 	
-	public FirstClassMember(AccessModifier modifier, String name)
+	public FirstClassCitizen(AccessModifier modifier, String name)
 	{
 		super();
 		this.modifier = modifier;

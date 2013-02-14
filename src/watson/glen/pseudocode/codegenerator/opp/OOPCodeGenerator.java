@@ -4,7 +4,7 @@ import watson.glen.pseudocode.codegenerator.CodeGeneratable;
 import watson.glen.pseudocode.codegenerator.CodeRepresentation;
 import watson.glen.pseudocode.constructs.ClassConstruct;
 import watson.glen.pseudocode.constructs.EnumConstruct;
-import watson.glen.pseudocode.constructs.FirstClassMember;
+import watson.glen.pseudocode.constructs.FirstClassCitizen;
 import watson.glen.pseudocode.constructs.InterfaceConstruct;
 
 public class OOPCodeGenerator implements CodeGeneratable
@@ -17,7 +17,7 @@ public class OOPCodeGenerator implements CodeGeneratable
 	}
 	
 	@Override
-	public CodeRepresentation generate(FirstClassMember firstClassConstruct)
+	public CodeRepresentation generate(FirstClassCitizen firstClassConstruct)
 	{
 		throw new RuntimeException("Not implemented");
 	}

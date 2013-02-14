@@ -3,7 +3,7 @@ package watson.glen.pseudocode.codegenerator.opp;
 import watson.glen.pseudocode.codegenerator.CodeRepresentation;
 import watson.glen.pseudocode.constructs.ClassConstruct;
 import watson.glen.pseudocode.constructs.EnumConstruct;
-import watson.glen.pseudocode.constructs.FirstClassMember;
+import watson.glen.pseudocode.constructs.FirstClassCitizen;
 import watson.glen.pseudocode.constructs.InstanceVariable;
 import watson.glen.pseudocode.constructs.InterfaceConstruct;
 import watson.glen.pseudocode.constructs.Method;
@@ -13,7 +13,7 @@ public class CSharpGenerator implements OOPCodeGeneratable
 {
 
 	@Override
-	public CodeRepresentation generate(FirstClassMember firstClassConstruct)
+	public CodeRepresentation generate(FirstClassCitizen firstClassConstruct)
 	{
 		throw new RuntimeException("Not implemented");
 	}

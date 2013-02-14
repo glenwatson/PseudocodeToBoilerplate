@@ -8,7 +8,7 @@ import java.util.Queue;
 import watson.glen.pseudocode.constructs.AccessModifier;
 import watson.glen.pseudocode.constructs.ClassConstruct;
 import watson.glen.pseudocode.constructs.EnumConstruct;
-import watson.glen.pseudocode.constructs.FirstClassMember;
+import watson.glen.pseudocode.constructs.FirstClassCitizen;
 import watson.glen.pseudocode.constructs.InstanceVariable;
 import watson.glen.pseudocode.constructs.InterfaceConstruct;
 import watson.glen.pseudocode.constructs.Method;
@@ -29,7 +29,7 @@ import watson.glen.pseudocode.tokenizer.Token;
 public class Parser
 {
 	private final String TAB = "\t";
-	List<FirstClassMember> constructs = new LinkedList<>();
+	List<FirstClassCitizen> constructs = new LinkedList<>();
 	private Level0State lvl0State;
 	private ClassConstruct currentClass;
 	private InterfaceConstruct currentInterface;
@@ -52,7 +52,7 @@ public class Parser
 	//end method signature regex
 */
 	
-	public List<FirstClassMember> interpret(List<LineToken> lineTokens)
+	public List<FirstClassCitizen> interpret(List<LineToken> lineTokens)
 	{
 		parseLineTokens(lineTokens);
 		return constructs;
@@ -99,7 +99,7 @@ public class Parser
 		return indention;
 	}
 	
-	private FirstClassMember getFirstClassMember()
+	private FirstClassCitizen getFirstClassMember()
 	{
 		switch(lvl0State)
 		{

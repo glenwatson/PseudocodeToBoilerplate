@@ -9,7 +9,7 @@ import java.util.List;
 import watson.glen.pseudocode.codegenerator.CodeGeneratable;
 import watson.glen.pseudocode.codegenerator.CodeRepresentation;
 import watson.glen.pseudocode.codegenerator.opp.JavaGenerator;
-import watson.glen.pseudocode.constructs.FirstClassMember;
+import watson.glen.pseudocode.constructs.FirstClassCitizen;
 import watson.glen.pseudocode.constructs.LanguageConstruct;
 import watson.glen.pseudocode.interpreter.Parser;
 import watson.glen.pseudocode.tokenizer.LineToken;
@@ -42,7 +42,7 @@ public class PseudocodeCompiler
 		FileInputStream inStream = new FileInputStream(fileName);
 		
 		List<LineToken> lineTokens = Tokenizer.tokenize(inStream);
-		List<FirstClassMember> constructs = new Parser().interpret(lineTokens);
+		List<FirstClassCitizen> constructs = new Parser().interpret(lineTokens);
 		
 		List<CodeRepresentation> languageRepresentation = generate(new JavaGenerator(), constructs);
 		
@@ -58,10 +58,10 @@ public class PseudocodeCompiler
 		System.out.println("Complete");
 	}
 	
-	private static List<CodeRepresentation> generate(CodeGeneratable generator, List<FirstClassMember> constructs)
+	private static List<CodeRepresentation> generate(CodeGeneratable generator, List<FirstClassCitizen> constructs)
 	{
 		List<CodeRepresentation> representations = new LinkedList<>();
-		for(FirstClassMember construct : constructs)
+		for(FirstClassCitizen construct : constructs)
 		{
 			representations.add(generator.generate(construct));
 		}

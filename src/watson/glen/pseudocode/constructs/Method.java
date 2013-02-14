@@ -3,7 +3,7 @@ package watson.glen.pseudocode.constructs;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Method extends SecondClassMember
+public class Method extends SecondClassCitizen
 {
 	private MethodSignature methodSignature;
 	private List<MethodLine> lines;

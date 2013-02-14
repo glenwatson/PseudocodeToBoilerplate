@@ -1,6 +1,6 @@
 package watson.glen.pseudocode.constructs;
 
-public class InstanceVariable extends SecondClassMember
+public class InstanceVariable extends SecondClassCitizen
 {
 	private AccessModifier modifier;
 	private VariableDeclaration variable;

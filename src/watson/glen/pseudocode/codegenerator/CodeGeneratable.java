@@ -2,12 +2,12 @@ package watson.glen.pseudocode.codegenerator;
 
 import watson.glen.pseudocode.constructs.ClassConstruct;
 import watson.glen.pseudocode.constructs.EnumConstruct;
-import watson.glen.pseudocode.constructs.FirstClassMember;
+import watson.glen.pseudocode.constructs.FirstClassCitizen;
 import watson.glen.pseudocode.constructs.InterfaceConstruct;
 
 public interface CodeGeneratable
 {
-	public CodeRepresentation generate(FirstClassMember firstClassConstruct);
+	public CodeRepresentation generate(FirstClassCitizen firstClassConstruct);
 	public CodeRepresentation generate(EnumConstruct enumConstruct);
 	public CodeRepresentation generate(ClassConstruct classConstruct);
 	public CodeRepresentation generate(InterfaceConstruct interfaceConstruct);
