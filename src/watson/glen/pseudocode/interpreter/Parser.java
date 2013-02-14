@@ -11,7 +11,6 @@ import watson.glen.pseudocode.constructs.EnumConstruct;
 import watson.glen.pseudocode.constructs.FirstClassMember;
 import watson.glen.pseudocode.constructs.InstanceVariable;
 import watson.glen.pseudocode.constructs.InterfaceConstruct;
-import watson.glen.pseudocode.constructs.LanguageConstruct;
 import watson.glen.pseudocode.constructs.Method;
 import watson.glen.pseudocode.constructs.MethodLine;
 import watson.glen.pseudocode.constructs.MethodSignature;
@@ -30,7 +29,7 @@ import watson.glen.pseudocode.tokenizer.Token;
 public class Parser
 {
 	private final String TAB = "\t";
-	List<LanguageConstruct> constructs = new LinkedList<LanguageConstruct>();
+	List<FirstClassMember> constructs = new LinkedList<>();
 	private Level0State lvl0State;
 	private ClassConstruct currentClass;
 	private InterfaceConstruct currentInterface;
@@ -53,7 +52,7 @@ public class Parser
 	//end method signature regex
 */
 	
-	public List<LanguageConstruct> interpret(List<LineToken> lineTokens)
+	public List<FirstClassMember> interpret(List<LineToken> lineTokens)
 	{
 		parseLineTokens(lineTokens);
 		return constructs;
