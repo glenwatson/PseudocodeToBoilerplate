@@ -29,7 +29,7 @@ public class PseudocodeCompiler
 	 */
 	public static void main(String[] args) throws FileNotFoundException
 	{
-		String fileName;
+		String fileName = "pseudocode.txt";
 		if(args.length >= 1)
 		{
 			fileName = args[0];
@@ -37,9 +37,8 @@ public class PseudocodeCompiler
 		else
 		{
 			System.out.println("Please supply a text file to parse");
-			fileName = "test.txt"; //TODO: remove
 		}
-		String outputDirectory;
+		String outputDirectory = "Output\\";
 		if(args.length >= 2)
 		{
 			outputDirectory = args[1];
@@ -47,7 +46,6 @@ public class PseudocodeCompiler
 		else
 		{
 			System.out.println("Please supply a output directory");
-			outputDirectory = "codeOutput\\"; //TODO: remove
 		}
 		
 		FileInputStream inStream = new FileInputStream(fileName);

@@ -142,7 +142,7 @@ public class JavaGenerator implements OOPCodeGeneratable
 		}
 		return representation;
 	}
-
+	
 	private String generate(InstanceVariable instanceVar)
 	{
 		StringBuilder sb = new StringBuilder();
@@ -155,7 +155,6 @@ public class JavaGenerator implements OOPCodeGeneratable
 		sb.append(generate(instanceVar.getVariable()));
 		return sb.toString();
 	}
-	
 	
 	private String generate(Method method)
 	{
@@ -171,12 +170,11 @@ public class JavaGenerator implements OOPCodeGeneratable
 		return sb.toString();
 	}
 	
-
 	private String generate(MethodLine methodline)
 	{
 		return "\t\t// "+methodline.getValue();
 	}
-
+	
 	private String generate(MethodSignature methodSig)
 	{
 		StringBuilder sb = new StringBuilder();
@@ -210,7 +208,6 @@ public class JavaGenerator implements OOPCodeGeneratable
 		return type.getName();
 	}
 	
-
 	private String generate(VariableDeclaration varDeclaration)
 	{
 		String result = generate(varDeclaration.getType()) + " " + varDeclaration.getVariableName();
