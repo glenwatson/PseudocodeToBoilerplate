@@ -49,12 +49,4 @@ public class VariableDeclaration
 		this.initalValue = initalValue;
 	}
 
-	@Override
-	public String toString()
-	{
-		String result = type + " " + variableName;
-		if(initalValue != null)
-			result += " = " + initalValue;
-		return result;
-	}
 }

@@ -76,25 +76,4 @@ public class MethodSignature
 		this.parameters = parameters;
 	}
 	
-	@Override
-	public String toString()
-	{
-		StringBuilder sb = new StringBuilder();
-		sb.append("\t");
-		sb.append(modifier);
-		if (isStatic)
-		{
-			sb.append("static ");
-		}
-		sb.append(returnType);
-		sb.append(" ");
-		sb.append(methodName);
-		sb.append("(");
-		int beforeLength = sb.length();
-		sb.append(parameters);
-		sb.delete(beforeLength, beforeLength + 1);
-		sb.delete(sb.length() - 1, sb.length());
-		sb.append(")");
-		return sb.toString();
-	}
 }

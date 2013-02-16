@@ -9,17 +9,18 @@ import watson.glen.pseudocode.codegenerator.CodeRepresentation;
 
 public class CodeWriter
 {
-	public static void WriteCode(List<CodeRepresentation> codeFiles) throws IOException
+	public static void WriteCode(File directory, List<CodeRepresentation> codeFiles) throws IOException
 	{
+		//assert !directory.isDirectory() : directory.getPath() +" is not a directory";
 		for(CodeRepresentation code : codeFiles)
-			WriteCode(code);
+			WriteCode(directory, code);
 	}
-	public static void WriteCode(CodeRepresentation code) throws IOException
+	public static void WriteCode(File directory, CodeRepresentation code) throws IOException
 	{
 		System.out.println("Writing to "+code.getFilePath());
-		File f = new File(code.getFilePath());
+		File f = new File(directory.getPath(), code.getFilePath());
 		
-		FileWriter fw = new FileWriter(f, true);
+		FileWriter fw = new FileWriter(f);
 		
 		fw.write(code.getRepresentation());
 		fw.close();

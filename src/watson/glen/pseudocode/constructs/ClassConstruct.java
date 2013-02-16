@@ -81,46 +81,6 @@ public class ClassConstruct extends FirstClassCitizen
 	}
 	
 	@Override
-	public String toString()
-	{
-		StringBuilder sb = new StringBuilder();
-		sb.append(modifier);
-		sb.append("class ");
-		sb.append(name);
-		if(inheritance != null)
-		{
-			sb.append(" extends ");
-			sb.append(inheritance);
-		}
-		if(implementations.size() > 0)
-		{
-			sb.append(" implements ");
-			for(Type implementation : implementations)
-			{
-				sb.append(implementation.getName());
-				sb.append(", ");
-			}
-			sb.delete(sb.length()-2, sb.length());
-		}
-		sb.append("\r\n{\r\n");
-		
-		for(InstanceVariable instanceVariable : instanceVariables)
-		{
-			sb.append(instanceVariable);
-			sb.append("\r\n");
-		}
-		sb.append("\r\n");
-		
-		for(Method method : methods)
-		{
-			sb.append(method);
-			sb.append("\r\n");
-		}
-		sb.append("}\r\n");
-		
-		return sb.toString();
-	}
-	@Override
 	public CodeRepresentation generateUsing(CodeGeneratable generatable)
 	{
 		return generatable.generate(this);

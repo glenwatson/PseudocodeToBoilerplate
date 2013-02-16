@@ -9,6 +9,4 @@ public abstract class LanguageConstruct
 
 	public abstract String getName();
 	
-	@Override
-	public abstract String toString();
 }

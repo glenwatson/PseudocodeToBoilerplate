@@ -1,5 +1,6 @@
 package watson.glen.pseudocode;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -36,8 +37,19 @@ public class PseudocodeCompiler
 		else
 		{
 			System.out.println("Please supply a text file to parse");
-			fileName = "test.txt";
+			fileName = "test.txt"; //TODO: remove
 		}
+		String outputDirectory;
+		if(args.length >= 2)
+		{
+			outputDirectory = args[1];
+		}
+		else
+		{
+			System.out.println("Please supply a output directory");
+			outputDirectory = "codeOutput\\"; //TODO: remove
+		}
+		
 		FileInputStream inStream = new FileInputStream(fileName);
 		
 		List<LineToken> lineTokens = Tokenizer.tokenize(inStream);
@@ -47,7 +59,7 @@ public class PseudocodeCompiler
 		
 		try
 		{
-			CodeWriter.WriteCode(languageRepresentation);
+			CodeWriter.WriteCode(new File(outputDirectory), languageRepresentation);
 		} catch (IOException e)
 		{
 			System.out.println(e.getMessage());

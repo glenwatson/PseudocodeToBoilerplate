@@ -47,19 +47,4 @@ public class Method extends SecondClassCitizen
 	{
 		return methodSignature.getMethodName();
 	}
-	
-	@Override
-	public String toString()
-	{
-		StringBuilder sb = new StringBuilder();
-		sb.append(methodSignature);
-		sb.append("\r\n\t{\r\n");
-		for (MethodLine methodLine : lines)
-		{
-			sb.append(methodLine);
-			sb.append("\r\n");
-		}
-		sb.append("\t}\r\n");
-		return sb.toString();
-	}
 }

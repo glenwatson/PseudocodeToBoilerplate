@@ -67,21 +67,4 @@ public class InstanceVariable extends SecondClassCitizen
 		return variable.getVariableName();
 	}
 	
-	@Override
-	public String toString()
-	{
-		StringBuilder sb = new StringBuilder();
-		sb.append("\t");
-		if(modifier != AccessModifier.defaultModifier)
-		{
-			sb.append(modifier);
-		}
-		if(isStatic)
-			sb.append("static ");
-		if(isFinal)
-			sb.append("final ");
-		sb.append(variable);
-		return sb.toString();
-	}
-	
 }

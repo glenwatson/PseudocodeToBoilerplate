@@ -33,24 +33,6 @@ public class EnumConstruct extends FirstClassCitizen
 	}
 
 	@Override
-	public String toString()
-	{
-		StringBuilder sb = new StringBuilder();
-		sb.append(modifier);
-		sb.append(" enum ");
-		sb.append(name);
-		sb.append("\r\n{\r\n\t");
-		for(String enumName : enumNames)
-		{
-			sb.append(enumName);
-			sb.append(",\r\n\t");
-		}
-		sb.deleteCharAt(sb.length()-4);
-		
-		return sb.toString();
-	}
-
-	@Override
 	public CodeRepresentation generateUsing(CodeGeneratable generatable)
 	{
 		return generatable.generate(this);

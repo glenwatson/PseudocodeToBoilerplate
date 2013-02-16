@@ -47,38 +47,6 @@ public class InterfaceConstruct extends FirstClassCitizen
 	{
 		this.inheritances = inheritances;
 	}
-	
-	@Override
-	public String toString()
-	{
-		StringBuilder sb = new StringBuilder();
-		sb.append(modifier);
-		sb.append("interface ");
-		sb.append(name);
-		if (inheritances.size() > 0)
-		{
-			sb.append(" extends ");
-			for (Type implementation : inheritances)
-			{
-				sb.append(implementation.getName());
-				sb.append(", ");
-			}
-			sb.delete(sb.length() - 2, sb.length());
-		}
-		sb.append("\r\n{\r\n");
-		
-		if (methodSignatures.size() > 0)
-			for (MethodSignature signature : methodSignatures)
-			{
-				sb.append(signature);
-				sb.append("\r\n");
-			}
-		else
-			sb.append("\r\n");
-		
-		sb.append("}\r\n");
-		return sb.toString();
-	}
 
 	@Override
 	public CodeRepresentation generateUsing(CodeGeneratable generatable)

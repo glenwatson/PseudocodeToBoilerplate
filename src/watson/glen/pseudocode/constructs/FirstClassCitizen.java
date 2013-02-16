@@ -22,6 +22,11 @@ public abstract class FirstClassCitizen extends LanguageConstruct
 	
 	public abstract CodeRepresentation generateUsing(CodeGeneratable generatable);
 	
+	public AccessModifier getModifier()
+	{
+		return modifier;
+	}
+
 	public String getName()
 	{
 		return name;
