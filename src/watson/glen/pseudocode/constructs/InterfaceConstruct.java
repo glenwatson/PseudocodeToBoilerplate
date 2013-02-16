@@ -3,6 +3,9 @@ package watson.glen.pseudocode.constructs;
 import java.util.ArrayList;
 import java.util.List;
 
+import watson.glen.pseudocode.codegenerator.CodeGeneratable;
+import watson.glen.pseudocode.codegenerator.CodeRepresentation;
+
 public class InterfaceConstruct extends FirstClassCitizen
 {
 	private List<MethodSignature> methodSignatures;
@@ -75,5 +78,11 @@ public class InterfaceConstruct extends FirstClassCitizen
 		
 		sb.append("}\r\n");
 		return sb.toString();
+	}
+
+	@Override
+	public CodeRepresentation generateUsing(CodeGeneratable generatable)
+	{
+		return generatable.generate(this);
 	}
 }

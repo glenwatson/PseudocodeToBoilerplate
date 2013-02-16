@@ -1,4 +1,8 @@
 package watson.glen.pseudocode.constructs;
+
+import watson.glen.pseudocode.codegenerator.CodeGeneratable;
+import watson.glen.pseudocode.codegenerator.CodeRepresentation;
+
 /**
  * Representation of a First-class citizen
  * @author glen.watson
@@ -15,6 +19,8 @@ public abstract class FirstClassCitizen extends LanguageConstruct
 		this.modifier = modifier;
 		this.name = name;
 	}
+	
+	public abstract CodeRepresentation generateUsing(CodeGeneratable generatable);
 	
 	public String getName()
 	{

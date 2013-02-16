@@ -10,7 +10,6 @@ import watson.glen.pseudocode.codegenerator.CodeGeneratable;
 import watson.glen.pseudocode.codegenerator.CodeRepresentation;
 import watson.glen.pseudocode.codegenerator.opp.JavaGenerator;
 import watson.glen.pseudocode.constructs.FirstClassCitizen;
-import watson.glen.pseudocode.constructs.LanguageConstruct;
 import watson.glen.pseudocode.interpreter.Parser;
 import watson.glen.pseudocode.tokenizer.LineToken;
 import watson.glen.pseudocode.tokenizer.Tokenizer;
@@ -63,7 +62,7 @@ public class PseudocodeCompiler
 		List<CodeRepresentation> representations = new LinkedList<>();
 		for(FirstClassCitizen construct : constructs)
 		{
-			representations.add(generator.generate(construct));
+			representations.add(construct.generateUsing(generator));
 		}
 		return representations;
 	}

@@ -4,7 +4,6 @@ import watson.glen.pseudocode.codegenerator.CodeGeneratable;
 import watson.glen.pseudocode.codegenerator.CodeRepresentation;
 import watson.glen.pseudocode.constructs.ClassConstruct;
 import watson.glen.pseudocode.constructs.EnumConstruct;
-import watson.glen.pseudocode.constructs.FirstClassCitizen;
 import watson.glen.pseudocode.constructs.InterfaceConstruct;
 
 public class OOPCodeGenerator implements CodeGeneratable
@@ -17,27 +16,21 @@ public class OOPCodeGenerator implements CodeGeneratable
 	}
 	
 	@Override
-	public CodeRepresentation generate(FirstClassCitizen firstClassConstruct)
-	{
-		throw new RuntimeException("Not implemented");
-	}
-
-	@Override
 	public CodeRepresentation generate(EnumConstruct enumConstruct)
 	{
-		throw new RuntimeException("Not implemented");
+		return oppGenerator.generate(enumConstruct);
 	}
 
 	@Override
 	public CodeRepresentation generate(ClassConstruct classConstruct)
 	{
-		throw new RuntimeException("Not implemented");
+		return oppGenerator.generate(classConstruct);
 	}
 
 	@Override
 	public CodeRepresentation generate(InterfaceConstruct interfaceConstruct)
 	{
-		throw new RuntimeException("Not implemented");
+		return oppGenerator.generate(interfaceConstruct);
 	}
 	
 }

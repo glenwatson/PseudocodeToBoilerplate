@@ -3,6 +3,9 @@ package watson.glen.pseudocode.constructs;
 import java.util.ArrayList;
 import java.util.List;
 
+import watson.glen.pseudocode.codegenerator.CodeGeneratable;
+import watson.glen.pseudocode.codegenerator.CodeRepresentation;
+
 public class ClassConstruct extends FirstClassCitizen
 {
 	private Type inheritance;
@@ -116,5 +119,10 @@ public class ClassConstruct extends FirstClassCitizen
 		sb.append("}\r\n");
 		
 		return sb.toString();
+	}
+	@Override
+	public CodeRepresentation generateUsing(CodeGeneratable generatable)
+	{
+		return generatable.generate(this);
 	}
 }

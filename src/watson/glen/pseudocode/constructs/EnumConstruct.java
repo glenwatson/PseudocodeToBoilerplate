@@ -3,6 +3,9 @@ package watson.glen.pseudocode.constructs;
 import java.util.ArrayList;
 import java.util.List;
 
+import watson.glen.pseudocode.codegenerator.CodeGeneratable;
+import watson.glen.pseudocode.codegenerator.CodeRepresentation;
+
 public class EnumConstruct extends FirstClassCitizen
 {
 	private List<String> enumNames;
@@ -45,6 +48,12 @@ public class EnumConstruct extends FirstClassCitizen
 		sb.deleteCharAt(sb.length()-4);
 		
 		return sb.toString();
+	}
+
+	@Override
+	public CodeRepresentation generateUsing(CodeGeneratable generatable)
+	{
+		return generatable.generate(this);
 	}
 	
 	

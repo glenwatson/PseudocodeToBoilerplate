@@ -16,6 +16,7 @@ public class CodeRepresentation
 	{
 		return filePath;
 	}
+	
 	public String getRepresentation()
 	{
 		return representation;
